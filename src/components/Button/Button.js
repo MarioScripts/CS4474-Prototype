@@ -7,7 +7,11 @@ class Button extends React.Component {
         const {width, height, style, className, children, onClick} = this.props;
 
         return (
-            <div className={`button${className ? " " + className : ''}`} style={{width, height, ...style}} onClick={onClick}>
+            <div
+                className={`button${className ? " " + className : ''}`}
+                style={{width, height, ...style}}
+                onClick={onClick}
+            >
                 {children}
             </div>
         );
