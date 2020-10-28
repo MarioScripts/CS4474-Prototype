@@ -17,10 +17,14 @@ html, body, #App {
   max-height: 13%;
   min-height: 170px;
   border-top: 1px solid gray;
+  align-items: center;
+  justify-content: center;
 }
 
 .content {
   display: flex;
   flex-grow: 1;
+  align-items: center;
+  justify-content: center;
 }
 

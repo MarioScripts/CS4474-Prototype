@@ -1,7 +1,9 @@
+const path = require('path');
+
 module.exports = {
     entry: './src/index.js',
     output: {
-        path: `${__dirname}/dist`,
+        path: path.join(__dirname, '../dist'),
         filename: 'bundle.js'
     },
     module: {
@@ -9,9 +11,6 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                options: {
-                    presets: [ '@babel/react', '@babel/env' ]
-                },
                 exclude: /node_modules/
             },
             {
@@ -26,14 +25,11 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: [ '.js', '.jsx' ]
+        extensions: [ '.js', '.jsx', '.scss' ]
     },
     devServer: {
         port: 3000,
-        contentBase: __dirname, // both src and output dirs
-        watchContentBase: true,
-        // inline: true,
+        // contentBase: path.join(__dirname, '../src'), // both src and output dirs
         // hot: true,
-        // disableHostCheck: true
     }
 };

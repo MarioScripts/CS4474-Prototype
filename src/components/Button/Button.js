@@ -1,16 +1,15 @@
 import React from 'react';
-import './Button.css';
+import './Button.scss';
 
 class Button extends React.Component {
 
     render() {
-        const {width, height, style, className, children, onClick, fontSize} = this.props;
-
+        const {width, height, style, className, children, onClick, fontSize, disabled} = this.props;
         return (
             <div
-                className={`button${className ? " " + className : ''}`}
+                className={disabled ? 'button disabled-button' : `button${className ? " " + className : ''}`}
                 style={{width, height, fontSize, ...style}}
-                onClick={onClick}
+                onClick={disabled ? null : onClick}
             >
                 {children}
             </div>

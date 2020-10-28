@@ -1,31 +1,39 @@
-import './App.css';
-import { hot } from 'react-hot-loader';
+import './App.scss';
+import { hot } from 'react-hot-loader/root';
 import React from 'react';
-import Button from "./components/Button/Button";
-import Modal from "./components/Modal/Modal";
 import NavBar from "./widgets/NavBar/NavBar";
+
+// Mock data for now, just to test some stuff
+const playlists = {
+    "Playlist 1": {
+        content: "Playlist 1 content"
+    },
+    "Playlist 2": {
+        content: "Playlist 2 content"
+    },
+    "Playlist 3": {
+        content: "Playlist 3 content"
+    },
+    "Playlist 4": {
+        content: "Playlist 4 content"
+    },
+    "Playlist 5": {
+        content: "Playlist 5 content"
+    },
+};
+
+const library = {
+    content: "Library content"
+};
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            showTestModal: false,
             activeContent: "Library content",
         }
     }
-
-    handleOpenModal = () => {
-        this.setState({
-            showTestModal: true,
-        });
-    };
-
-    handleCloseModal = () => {
-        this.setState({
-            showTestModal: false,
-        });
-    };
 
     handleNavChange = (content) => {
         this.setState({
@@ -34,34 +42,25 @@ class App extends React.Component {
     };
 
     render() {
-        const { showTestModal, activeContent } = this.state;
+        const { activeContent } = this.state;
         return (
             <div className="container">
-                <Modal
-                    width={700}
-                    height={500}
-                    title="Setup"
-                    cancelText="Cancel"
-                    text="Continue"
-                    isShowing={showTestModal}
-                    onClose={this.handleCloseModal}
+                <NavBar
+                    onChange={this.handleNavChange}
+                    playlists={playlists}
+                    library={library}
                 />
-                <NavBar onChange={this.handleNavChange}/>
+
                 <div className="content">
                     {activeContent}
                 </div>
 
                 <div className="controls">
-                    <Button
-                        className="filled-button"
-                        onClick={this.handleOpenModal}
-                    >
-                        Show Test Modal
-                    </Button>
+                    Player controls here
                 </div>
             </div>
         );
     }
 }
 
-export default hot(module)(App);
+export default hot(App);

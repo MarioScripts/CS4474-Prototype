@@ -29,11 +29,11 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "webpack-build": "webpack --config config/webpack.prod.js",
+    "webpack-build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
     "electron-build": "electron-builder",
     "clean": "rm -rf ./dist",
     "build": "npm run clean && npm run webpack-build && npm run electron-build",
-    "start": "concurrently \"cross-env BROWSER=none webpack serve --watch --hot --inline --config config/webpack.prod.js --mode development\" \"wait-on http://localhost:3000 && electron .\""
+    "start": "concurrently --kill-others --success first \"cross-env BROWSER=none NODE_ENV=development webpack serve --config config/webpack.prod.js\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
     "extends": [
@@ -69,9 +69,12 @@
     "electron": "^10.1.5",
     "electron-builder": "^22.9.1",
     "file-loader": "^6.1.1",
+    "hot-module-replacement": "^3.0.4",
     "html-webpack-plugin": "^4.5.0",
-    "mini-css-extract-plugin": "^1.2.0",
+    "mini-css-extract-plugin": "^1.2.1",
+    "node-sass": "^4.14.1",
     "react-hot-loader": "^4.13.0",
+    "sass-loader": "^10.0.4",
     "style-loader": "^2.0.0",
     "wait-on": "^5.2.0",
     "webpack": "^5.2.0",

@@ -1,34 +1,43 @@
+@import 'colors';
+
 .button {
     display: flex;
     padding: 10px 30px;
     height: 20px;
-    border-radius: 100px 100px 100px 100px;
+    border-radius: 100px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    user-select: none;
 }
 
 .filled-button {
     border: none;
-    background-color: rgb(0, 93, 255);
+    background-color: $blue;
     color: white;
 }
 
 .filled-button:hover {
-    background-color: rgba(0, 93, 255, 0.8);
+    background-color: $highlight-blue;
 }
 
 .inverse-button {
     border-style: solid;
     border-width: 2px;
     background-color: white;
-    border-color: rgb(0, 93, 255);
-    color: rgb(0, 93, 255);
+    border-color: $blue;
+    color: $blue;
     height: 16px;
     border-radius: 100px 100px 100px 100px;
 }
 
 .inverse-button:hover {
-    border-color: rgba(0, 93, 255, 0.8);
+    border-color: $highlight-blue;
     font-weight: 600;
+}
+
+.disabled-button {
+    cursor: not-allowed;
+    background-color: $disabled-background;
+    color: $disabled-text;
 }

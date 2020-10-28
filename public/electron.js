@@ -4,8 +4,8 @@ const isDev = require('electron-is-dev');
 
 function createWindow () {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1000,
+        height: 800,
         webPreferences: {
             nodeIntegration: true,
             webSecurity: false,
@@ -16,6 +16,9 @@ function createWindow () {
     win.loadURL(
         isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../dist/index.html")}`
     );
+
+    // Disable menu. We might want to re-enable it at some point
+    win.setMenu(null);
     // win.webContents.openDevTools()
 }
 

@@ -1,0 +1,19 @@
+@import 'colors';
+
+.menu-item-container {
+    user-select: none;
+    cursor: pointer;
+    margin-right: 30px;
+}
+
+.active {
+    border-bottom: 2px solid $blue;
+}
+
+.navbar-new-playlist {
+    margin-left: auto;
+}
+
+.menu-item-container:hover {
+    color: $blue;
+}

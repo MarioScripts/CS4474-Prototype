@@ -1,47 +1,85 @@
 import React from 'react';
-import './NavBar.css';
+import './NavBar.scss';
 import MenuItem from "../../components/MenuItem/MenuItem";
 import Button from "../../components/Button/Button";
+import Modal from "../../components/Modal/Modal";
 
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            activeIndex: 0,
+            activePlaylist: "Library",
+            showNewPlaylistModal: false,
         };
     }
 
-    handleActivateItem = (index) => {
-        const  { onChange } = this.props;
+    handleToggleModal = (state) => {
+        this.setState({
+            showNewPlaylistModal: state
+        });
+    };
+
+    handleActivateItem = (playlist) => {
+        const  { onChange, playlists, library } = this.props;
 
         this.setState({
-            activeIndex: index,
+            activePlaylist: playlist,
         });
 
-        if (index === 0) {
-            onChange(`Library Content`);
+        if (playlist === "Library") {
+            onChange(library.content);
         } else {
-            onChange(`Playlist${index} Content`);
+            onChange(playlists[playlist].content);
         }
 
     };
 
     render() {
-        const { activeIndex } = this.state;
+        const { activePlaylist, showNewPlaylistModal } = this.state;
+        const { playlists } = this.props;
 
-        const playlists = [];
-        for(let i = 1; i < 5; i++) {
-            playlists.push(
-                <MenuItem fontSize={16} active={i === activeIndex } onClick={() => this.handleActivateItem(i)}>Playlist{i}</MenuItem>
+        const playlistRenders = [];
+        for(const playlistName of Object.keys(playlists)) {
+            playlistRenders.push(
+                <MenuItem fontSize={16} active={playlistName === activePlaylist } onClick={() => this.handleActivateItem(playlistName)}>{playlistName}</MenuItem>
             )
         }
         return (
             <div className="navbar-container">
-                <MenuItem fontSize={18} active={activeIndex === 0} onClick={() => this.handleActivateItem(0)}>Library</MenuItem>
+                <Modal
+                    width={700}
+                    height={500}
+                    title="New Playlist"
+                    cancelText="Cancel"
+                    text="Create"
+                    disablePrimary={true}
+                    isShowing={showNewPlaylistModal}
+                    onClose={() => this.handleToggleModal(false)}
+                >
+
+                </Modal>
+                <MenuItem
+                    fontSize={22}
+                    active={activePlaylist === "Library"}
+                    onClick={() => this.handleActivateItem("Library")}
+                >
+                    Library
+                </MenuItem>
+
                 <div className="navbar-divider"/>
-                {playlists}
-                <Button className="filled-button navbar-new-playlist" height={10} width={75} fontSize={14}>New Playlist</Button>
+
+                {playlistRenders}
+
+                <Button
+                    className="filled-button navbar-new-playlist"
+                    height={10}
+                    width={75}
+                    fontSize={14}
+                    onClick={() => this.handleToggleModal(true)}
+                >
+                    New Playlist
+                </Button>
             </div>
         );
     }
