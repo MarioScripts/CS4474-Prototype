@@ -3,6 +3,7 @@ import { hot } from 'react-hot-loader';
 import React from 'react';
 import Button from "./components/Button/Button";
 import Modal from "./components/Modal/Modal";
+import NavBar from "./widgets/NavBar/NavBar";
 
 class App extends React.Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class App extends React.Component {
 
         this.state = {
             showTestModal: false,
+            activeContent: "Library content",
         }
     }
 
@@ -25,8 +27,14 @@ class App extends React.Component {
         });
     };
 
+    handleNavChange = (content) => {
+        this.setState({
+            activeContent: content,
+        });
+    };
+
     render() {
-        const { showTestModal } = this.state;
+        const { showTestModal, activeContent } = this.state;
         return (
             <div className="container">
                 <Modal
@@ -38,11 +46,9 @@ class App extends React.Component {
                     isShowing={showTestModal}
                     onClose={this.handleCloseModal}
                 />
-                <div className="navbar">
-
-                </div>
+                <NavBar onChange={this.handleNavChange}/>
                 <div className="content">
-
+                    {activeContent}
                 </div>
 
                 <div className="controls">

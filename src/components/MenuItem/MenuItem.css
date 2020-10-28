@@ -1,0 +1,12 @@
+.menu-item-container {
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.active {
+    border-bottom: 2px solid rgb(0, 93, 255);
+}
+
+.navbar-new-playlist {
+    margin-left: auto;
+}

@@ -12,19 +12,10 @@ html, body, #App {
   height: 100%;
 }
 
-.navbar {
-  display: flex;
-  height: 5%;
-  margin: 0;
-
-  flex-shrink: 1;
-  border-bottom: 1px solid gray;
-  padding: 0 10px 0 10px;
-}
-
 .controls {
   display: flex;
-  height: 13%;
+  max-height: 13%;
+  min-height: 170px;
   border-top: 1px solid gray;
 }
 
