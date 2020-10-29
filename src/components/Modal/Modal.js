@@ -1,5 +1,6 @@
 import React from 'react';
 import './Modal.scss';
+import PropTypes from 'prop-types';
 import Button from "../Button/Button";
 
 class Modal extends React.Component {
@@ -42,5 +43,23 @@ class Modal extends React.Component {
         );
     }
 }
+
+Modal.propTypes = {
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    children: PropTypes.array,
+    cancelText: PropTypes.string,
+    text: PropTypes.string,
+    isShowing: PropTypes.bool,
+    disablePrimary: PropTypes.bool,
+};
+
+Modal.defaultProps = {
+    cancelText: "Cancel",
+    text: "Continue",
+    disablePrimary: false,
+    isShowing: false,
+};
 
 export default Modal;

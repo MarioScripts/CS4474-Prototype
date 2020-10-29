@@ -1,5 +1,6 @@
 import React from 'react';
 import './NavBar.scss';
+import PropTypes from 'prop-types';
 import MenuItem from "../../components/MenuItem/MenuItem";
 import Button from "../../components/Button/Button";
 import Modal from "../../components/Modal/Modal";
@@ -84,5 +85,9 @@ class NavBar extends React.Component {
         );
     }
 }
+
+NavBar.propTypes = {
+    playlists: PropTypes.object.isRequired,
+};
 
 export default NavBar;
