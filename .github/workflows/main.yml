@@ -48,5 +48,5 @@ jobs:
           tag: ${{ github.ref }}
           name: CS4474 Prototype
           body: This release contains the EXE installer for the prototype.  
-          gzip: folders
+          allow_override: true
           files: ./dist/${{ steps.get-exe-name.outputs.exe-name }}
