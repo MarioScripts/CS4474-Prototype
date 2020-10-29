@@ -31,7 +31,7 @@
   },
   "scripts": {
     "webpack-build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
-    "electron-build": "electron-builder",
+    "electron-build": "electron-builder -w",
     "clean": "rm -rf ./dist",
     "build": "npm run clean && npm run webpack-build && npm run electron-build",
     "start": "concurrently --kill-others --success first \"cross-env BROWSER=none NODE_ENV=development webpack serve --config config/webpack.prod.js\" \"wait-on http://localhost:3000 && electron .\""
