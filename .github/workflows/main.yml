@@ -41,23 +41,12 @@ jobs:
         run: |
           echo "::set-output name=exe-name::$(basename ./dist/*.exe)"
         
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release
+        uses: meeDamian/github-release@2.0
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./dist/${{ steps.get-exe-name.outputs.exe-name }}
-          asset_name: ${{ steps.get-exe-name.outputs.exe-name }}
-          asset_content_type: application/octet-stream
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          name: CS4474 Prototype
+          body: This release contains the EXE installer for the prototype.  
+          gzip: folders
+          files: ./dist/${{ steps.get-exe-name.outputs.exe-name }}
