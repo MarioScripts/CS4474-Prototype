@@ -49,4 +49,5 @@ jobs:
           name: CS4474 Prototype
           body: This release contains the EXE installer for the prototype.  
           allow_override: true
+          gzip: false
           files: ./dist/${{ steps.get-exe-name.outputs.exe-name }}
