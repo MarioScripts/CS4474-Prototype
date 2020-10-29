@@ -39,7 +39,7 @@ jobs:
       - name: Set an output
         id: get-exe-name
         run: |
-          echo ::set-output name=exe-name::$(basename ./dist/*.exe)
+          echo "::set-output name=exe-name::$(basename ./dist/*.exe)"
         
       - name: Create Release
         id: create_release
