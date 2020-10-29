@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master, setup-cicd ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, setup-cicd ]
+    branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -45,7 +45,7 @@ jobs:
         uses: johnwbyrd/update-release@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: ./dist/${{ steps.get-exe-name.outputs.exe-name }}  
+          files: "./dist/${{ steps.get-exe-name.outputs.exe-name }}"
           release: CS4474 Prototype
           tag: ${{ github.ref }}
           body: Installer for CS4474 Prototype
