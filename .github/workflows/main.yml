@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ master, setup-cicd ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, setup-cicd ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -39,7 +39,7 @@ jobs:
       - name: Set an output
         id: get-exe-name
         run: |
-          echo ::set-output name=name::$(basename ./dist/*.exe)
+          echo $(ls)
         
       - name: Create Release
         id: create_release
