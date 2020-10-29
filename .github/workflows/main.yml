@@ -6,16 +6,16 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ master, setup-cicd ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, setup-cicd ]
+    branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     
     strategy:
       matrix:
@@ -39,25 +39,14 @@ jobs:
       - name: Set an output
         id: get-exe-name
         run: |
-          echo ::set-output name=exe-name::$(basename ./dist/*.exe)
+          echo "::set-output name=exe-name::$(basename ./dist/*.exe)"
         
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update Release
+        uses: johnwbyrd/update-release@v1.0.0
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./dist/${{ steps.get-exe-name.outputs.exe-name }}
-          asset_name: ${{ steps.get-exe-name.outputs.exe-name }}
-          asset_content_type: application/octet-stream
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: "./dist/${{ steps.get-exe-name.outputs.exe-name }}"
+          release: CS4474 Prototype
+          tag: ${{ github.ref }}
+          body: Installer for CS4474 Prototype
+
