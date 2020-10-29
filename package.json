@@ -1,11 +1,11 @@
 {
-  "name": "cs4474",
+  "name": "CS4474_Prototype",
   "version": "0.1.0",
   "private": true,
   "main": "public/electron.js",
   "description": "Prototype for CS4474",
   "build": {
-    "appId": "com.example.electron-boilerplate",
+    "appId": "com.cs4474.prototype",
     "files": [
       "dist/**/*",
       "public/**/**",
@@ -15,7 +15,10 @@
     "directories": {
       "buildResources": "resources"
     },
-    "publish": null
+    "publish": null,
+    "nsis": {
+    	"artifactName": "${productName}_Setup_${version}.${ext}"
+    }
   },
   "homepage": "./",
   "dependencies": {
@@ -31,7 +34,7 @@
   },
   "scripts": {
     "webpack-build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js",
-    "electron-build": "electron-builder -w",
+    "electron-build": "electron-builder",
     "clean": "rm -rf ./dist",
     "build": "npm run clean && npm run webpack-build && npm run electron-build",
     "start": "concurrently --kill-others --success first \"cross-env BROWSER=none NODE_ENV=development webpack serve --config config/webpack.prod.js\" \"wait-on http://localhost:3000 && electron .\""
