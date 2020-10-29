@@ -15,9 +15,6 @@ Runs the app in development mode.\
 An electron window should popup with the app running.
 You can also open go to [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
 ### `npm run clean`
 
 Cleans the app's distribution folder.
@@ -26,3 +23,4 @@ Cleans the app's distribution folder.
 
 Builds the app for production to the `dist` folder.\
 Installers for the distributable version of the app are available in the `dist` folder once building is complete.
+Building should make the appropriate installer based on your current OS.
