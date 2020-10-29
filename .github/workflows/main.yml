@@ -41,13 +41,12 @@ jobs:
         run: |
           echo "::set-output name=exe-name::$(basename ./dist/*.exe)"
         
-      - name: Create release
-        uses: meeDamian/github-release@2.0
+      - name: Update Release
+        uses: johnwbyrd/update-release@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          files: ./dist/${{ steps.get-exe-name.outputs.exe-name }}  
+          release: CS4474 Prototype
           tag: ${{ github.ref }}
-          name: CS4474 Prototype
-          body: This release contains the EXE installer for the prototype.  
-          allow_override: true
-          gzip: false
-          files: ./dist/${{ steps.get-exe-name.outputs.exe-name }}
+          body: Installer for CS4474 Prototype
+
