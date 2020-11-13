@@ -10,7 +10,7 @@ class NavBar extends React.Component {
         super(props);
 
         this.state = {
-            activePlaylist: "Library",
+            activePlaylist: "library",
             showNewPlaylistModal: false,
         };
     }
@@ -28,10 +28,10 @@ class NavBar extends React.Component {
             activePlaylist: playlist,
         });
 
-        if (playlist === "Library") {
-            onChange(library.content);
+        if (playlist === "library") {
+            onChange(library, playlist, false);
         } else {
-            onChange(playlists[playlist].content);
+            onChange(playlists[playlist], playlist, true);
         }
 
     };
@@ -62,8 +62,8 @@ class NavBar extends React.Component {
                 </Modal>
                 <MenuItem
                     fontSize={22}
-                    active={activePlaylist === "Library"}
-                    onClick={() => this.handleActivateItem("Library")}
+                    active={activePlaylist === "library"}
+                    onClick={() => this.handleActivateItem("library")}
                 >
                     Library
                 </MenuItem>
