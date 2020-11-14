@@ -133,6 +133,25 @@
 .currently-playing-container {
   width: 20%;
   height: 100%;
+  padding-left: 1%;
+}
+
+.now-playing{
+  border-style: solid;
+  text-align: center;
+  color: white;
+  background-color: $blue;
+  font-weight: bold;
+}
+
+.song-info-display{
+  padding-top: 0.5%;
+  height: 70%;
+}
+
+.now-playing-title {
+  font-weight: bold;
+  color: black;
 }
 
 .volume-slide-container {
