@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import MenuItem from "../../components/MenuItem/MenuItem";
 import Button from "../../components/Button/Button";
 import Modal from "../../components/Modal/Modal";
+import CreatePlaylist from "../modals/CreatePlaylist/CreatePlaylist";
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -37,7 +38,7 @@ class NavBar extends React.Component {
     };
 
     render() {
-        const { activePlaylist, showNewPlaylistModal } = this.state;
+        const { activePlaylist, showNewPlaylistModal, songs } = this.state;
         const { playlists } = this.props;
 
         const playlistRenders = [];
@@ -48,18 +49,15 @@ class NavBar extends React.Component {
         }
         return (
             <div className="navbar-container">
-                <Modal
-                    width={700}
-                    height={500}
-                    title="New Playlist"
-                    cancelText="Cancel"
-                    text="Create"
-                    disablePrimary={true}
+                <CreatePlaylist
                     isShowing={showNewPlaylistModal}
                     onClose={() => this.handleToggleModal(false)}
+                    songs={songs}
+                    playlists={playlists}
                 >
 
-                </Modal>
+                </CreatePlaylist>
+
                 <MenuItem
                     fontSize={22}
                     active={activePlaylist === "library"}
@@ -88,6 +86,7 @@ class NavBar extends React.Component {
 
 NavBar.propTypes = {
     playlists: PropTypes.object.isRequired,
+    songs: PropTypes.object.isRequired,
 };
 
 export default NavBar;

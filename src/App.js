@@ -140,6 +140,7 @@ class App extends React.Component {
                     onChange={this.handleNavChange}
                     playlists={playlists}
                     library={settings.getSync("library")}
+                    songs={activeSongList}
                 />
 
                 <Modal

@@ -1,0 +1,14 @@
+@import "colors";
+
+.text-input {
+  height: 20px;
+  outline: none;
+}
+
+.text-input:focus {
+  outline: 1px solid $blue;
+}
+
+.error-text-input {
+  outline: 1px solid $red !important;
+}
