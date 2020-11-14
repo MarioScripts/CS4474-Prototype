@@ -62,3 +62,6 @@ export const formatTime = (time) => {
 
     return `${minutes}:${seconds >= 0 && seconds <= 9 ? "0" : ""}${seconds}`
 };
+
+export const PLAYING = true;
+export const PAUSED = false;
