@@ -2,7 +2,7 @@ const fs = window.require("fs");
 const mm = window.require("music-metadata");
 
 const extensionRegex = /\.[a-z0-9]+/g;
-const songNameRegex = "(?<=\\\\)[A-Za-z0-9_]*(?=\\$1)";
+const songNameRegex = "(?<=\\\\)[A-Za-z0-9_\\-]*(?=\\$1)";
 const supportedSongExtensions = new Set([".mp4", ".mp3", ".m4a", ".flac", ".wav", ".wma", ".aac"]);
 
 export const expandSongs = async (songList) => {
@@ -62,3 +62,6 @@ export const formatTime = (time) => {
 
     return `${minutes}:${seconds >= 0 && seconds <= 9 ? "0" : ""}${seconds}`
 };
+
+export const PLAYING = true;
+export const PAUSED = false;

@@ -2,18 +2,15 @@ import React from 'react';
 import './MediaControls.scss';
 import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player/lazy';
-import { formatTime } from "../../utils/songUtils";
+import {formatTime, PAUSED, PLAYING} from "../../utils/songUtils";
 import {pauseSvg, playSvg, prevButton, skipButton, volumeMuteSvg, volumeSvg} from "../../utils/iconUtils";
 
-const PLAYING = true;
-const PAUSED = false;
 class MediaControls extends React.Component {
     constructor(props) {
         super(props);
         this.player = null;
 
         this.state = {
-            songState: PAUSED,
             songDuration: 0,
             songProgress: 0,
             songVolume: 50,
@@ -22,18 +19,11 @@ class MediaControls extends React.Component {
         };
     }
 
-    playAll = () => {
+    resetSong = () => {
         this.setState({
-            songState: PLAYING,
             songProgress: 0,
         });
         this.player.seekTo(0);
-    };
-
-    handleSongStateToggle = (newState) => {
-        this.setState({
-            songState: newState,
-        });
     };
 
     handleSongProgress = (progress) => {
@@ -64,13 +54,11 @@ class MediaControls extends React.Component {
     };
 
     handleSongEnd = () => {
-        const { songs, onIndexChange, songIndex } = this.props;
+        const { songs, onIndexChange, songIndex, onSongStateChange } = this.props;
         const songLength = Object.keys(songs).length;
 
         if (songIndex >= songLength - 1) {
-            this.setState({
-                songState: PAUSED,
-            });
+            onSongStateChange(PAUSED);
         } else {
             onIndexChange((songIndex + 1) % songLength);
         }
@@ -130,9 +118,11 @@ class MediaControls extends React.Component {
         const {
             songs,
             songIndex,
+            songState,
+            onSongStateChange,
         } = this.props;
 
-        const { songState, songProgress, songDuration, seekingInProgress, songVolume, songMuted } = this.state;
+        const { songProgress, songDuration, seekingInProgress, songVolume, songMuted } = this.state;
         let playPauseRender;
         let volumeRender;
 
@@ -151,14 +141,14 @@ class MediaControls extends React.Component {
         if(songState === PLAYING) {
             playPauseRender = (
                 <div id="pause-button" className="media-icon">
-                    { pauseSvg(() => this.handleSongStateToggle(PAUSED)) }
+                    { pauseSvg(() => onSongStateChange(PAUSED)) }
                 </div>
 
             );
         } else {
             playPauseRender = (
                 <div id="play-button" className="media-icon">
-                    { playSvg(() => this.handleSongStateToggle(PLAYING)) }
+                    { playSvg(() => onSongStateChange(PLAYING)) }
                 </div>
             );
         }
@@ -258,7 +248,9 @@ class MediaControls extends React.Component {
 
 MediaControls.propTypes = {
     songs: PropTypes.array.isRequired,
+    songState: PropTypes.bool.isRequired,
     onIndexChange: PropTypes.func.isRequired,
+    onSongStateChange: PropTypes.func.isRequired,
     songIndex: PropTypes.number.isRequired,
 };
 
