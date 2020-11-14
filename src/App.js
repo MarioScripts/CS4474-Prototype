@@ -6,7 +6,7 @@ import Modal from "./components/Modal/Modal";
 import MediaControls from "./widgets/MediaControls/MediaControls";
 const settings = window.require("electron-settings");
 const dialog = window.require("electron").remote.dialog;
-import { expandSongs } from "./utils/songUtils";
+import {expandSongs, PAUSED, PLAYING} from "./utils/songUtils";
 import Content from "./widgets/Content/Content";
 
 // Mock data for now, just to test some stuff
@@ -22,14 +22,14 @@ const playlists = {
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.test = React.createRef();
+        this.player = React.createRef();
         this.state = {
-            activeContent: "Library content",
             activeSongList: {},
             activeSongIndex: 0,
             viewableSongList: {},
             activeKey: "library",
             viewableKey: "library",
+            songState: PAUSED,
             isPlaylist: false,
             firstTimeSetup: false,
         }
@@ -92,18 +92,48 @@ class App extends React.Component {
         });
     };
 
+    handleSongStateChange = (newState) => {
+        this.setState({
+            songState: newState,
+        });
+    };
+
     handlePlayAll = () => {
         const { viewableSongList, viewableKey } = this.state;
         this.setState({
             activeSongIndex: 0,
             activeSongList: viewableSongList,
-            activeKey: viewableKey
+            activeKey: viewableKey,
+            songState: PLAYING,
         });
-        this.test.current.playAll();
+        this.player.current.resetSong();
+    };
+
+    handleSongChange = (index, state) => {
+        const { viewableKey, viewableSongList, activeSongIndex, activeKey } = this.state;
+
+        if (index !== activeSongIndex && activeKey !== viewableKey) {
+            this.player.current.resetSong();
+        }
+
+        this.setState({
+            activeSongIndex: index,
+            songState: state,
+            activeKey: viewableKey,
+            activeSongList: viewableSongList,
+        });
+    };
+
+    handleSongEdit = (index) => {
+        // TODO: Edit song details
+    };
+
+    handleSongDelete = (index) => {
+        // TODO: Delete song (different functionality based on if isPlaylist or not)
     };
 
     render() {
-        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey } = this.state;
+        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState } = this.state;
         return (
             <div className="container">
                 <NavBar
@@ -126,10 +156,26 @@ class App extends React.Component {
                     </div>
                 </Modal>
 
-                <Content songList={viewableSongList} isPlaylist={isPlaylist} activeSongIndex={activeKey === viewableKey ? activeSongIndex : null} onPlayAll={this.handlePlayAll}/>
+                <Content
+                    songs={viewableSongList}
+                    isPlaylist={isPlaylist}
+                    activeSongIndex={activeKey === viewableKey ? activeSongIndex : null}
+                    onPlayAll={this.handlePlayAll}
+                    isPlaying={songState === PLAYING}
+                    onSongStateChange={this.handleSongChange}
+                    onSongEdit={this.handleSongEdit}
+                    onSongDelete={this.handleSongDelete}
+                />
 
                 <div className="controls">
-                    <MediaControls songs={activeSongList} songIndex={activeSongIndex} onIndexChange={this.handleSongIndexChange} ref={this.test}/>
+                    <MediaControls
+                        songs={activeSongList}
+                        songIndex={activeSongIndex}
+                        songState={songState}
+                        onSongStateChange={this.handleSongStateChange}
+                        onIndexChange={this.handleSongIndexChange}
+                        ref={this.player}
+                    />
                 </div>
             </div>
         );
