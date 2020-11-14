@@ -1,6 +1,25 @@
-const { app, BrowserWindow, globalShortcut } = require('electron');
+const { app, BrowserWindow, globalShortcut, protocol } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
+const contextMenu = require('electron-context-menu');
+
+contextMenu({
+    prepend: (defaultActions, params, browserWindow) => [
+        {
+            label: 'Rainbow',
+            // Only show it when right-clicking images
+            visible: params.mediaType === 'image'
+        },
+        {
+            label: 'Search Google for “{selection}”',
+            // Only show it when right-clicking text
+            visible: params.selectionText.trim().length > 0,
+            click: () => {
+                shell.openExternal(`https://google.com/search?q=${encodeURIComponent(params.selectionText)}`);
+            }
+        }
+    ]
+});
 
 function createWindow () {
     const win = new BrowserWindow({
@@ -8,6 +27,7 @@ function createWindow () {
         height: 800,
         webPreferences: {
             nodeIntegration: true,
+            enableRemoteModule: true,
             webSecurity: false,
             devTools: isDev,
         }
@@ -18,7 +38,9 @@ function createWindow () {
     );
 
     // Disable menu. We might want to re-enable it at some point
-    win.setMenu(null);
+    if (!isDev) {
+        win.setMenu(null);
+    }
     // win.webContents.openDevTools()
 }
 
@@ -29,6 +51,10 @@ app.whenReady().then(() => {
     if (!isDev) {
         globalShortcut.register('CommandOrControl+R', () => {})
     }
+    protocol.registerFileProtocol('file', (request, callback) => {
+        const pathname = decodeURI(request.url.replace('file:///', ''));
+        callback(pathname);
+    });
 });
 
 app.on('window-all-closed', () => {

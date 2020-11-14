@@ -2,7 +2,7 @@ html, body, #App {
   margin: 0;
   height: 100%;
   font-family: "Segoe UI", serif;
-
+  user-select: none;
 }
 
 .container {
@@ -15,16 +15,8 @@ html, body, #App {
 .controls {
   display: flex;
   max-height: 13%;
-  min-height: 170px;
+  min-height: 150px;
   border-top: 1px solid gray;
   align-items: center;
   justify-content: center;
 }
-
-.content {
-  display: flex;
-  flex-grow: 1;
-  align-items: center;
-  justify-content: center;
-}
-

@@ -53,6 +53,7 @@ Modal.propTypes = {
     text: PropTypes.string,
     isShowing: PropTypes.bool,
     disablePrimary: PropTypes.bool,
+    onClose: PropTypes.func,
 };
 
 Modal.defaultProps = {
