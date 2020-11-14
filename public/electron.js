@@ -38,8 +38,10 @@ function createWindow () {
     );
 
     // Disable menu. We might want to re-enable it at some point
-    // win.setMenu(null);
-    win.webContents.openDevTools()
+    if (!isDev) {
+        win.setMenu(null);
+    }
+    // win.webContents.openDevTools()
 }
 
 app.whenReady().then(createWindow);
