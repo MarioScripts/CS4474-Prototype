@@ -3,25 +3,21 @@ import './Content.scss';
 import PropTypes from 'prop-types';
 import Button from "../../components/Button/Button";
 import {playSvg} from "../../utils/iconUtils";
+import SongList from "../../components/SongList/SongList";
 
 class Content extends React.Component {
     render() {
         const {
-            songList,
+            songs,
             isPlaylist,
+            isPlaying,
             activeSongIndex,
             onPlayAll,
+            onSongStateChange,
+            onSongEdit,
+            onSongDelete,
         } = this.props;
-        const songLength = Object.keys(songList).length;
-
-        const songRenders = [];
-        Object.values(songList).forEach((song, index) => {
-            songRenders.push(
-                <div id={song.name}>
-                    { song.name } ___ { song.album || "--"} ___ { song.artist } ___ { song.genre } ___ { song.duration } ___ { index === activeSongIndex ? " - PLAYING" : ""}
-                </div>
-            );
-        });
+        const songLength = Object.keys(songs).length;
 
         return (
             <div className="content">
@@ -41,18 +37,39 @@ class Content extends React.Component {
 
                     </div>
                 </div>
-                { songRenders }
+                <div className="song-list-separator"/>
+
+                <SongList
+                    songs={songs}
+                    activeSongIndex={activeSongIndex}
+                    isPlaying={isPlaying}
+                    onSongDelete={onSongDelete}
+                    onSongEdit={onSongEdit}
+                    onSongStateChange={onSongStateChange}
+                />
             </div>
         );
     }
 }
-//
-// Modal.propTypes = {
-//
-// };
-//
-// Modal.defaultProps = {
-//
-// };
+
+Content.propTypes = {
+    songs: PropTypes.object.isRequired,
+    onPlayAll: PropTypes.func.isRequired,
+    isPlaylist: PropTypes.bool,
+    activeSongIndex: PropTypes.number,
+    isPlaying: PropTypes.bool,
+    onSongStateChange: PropTypes.func,
+    onSongEdit: PropTypes.func,
+    onSongDelete: PropTypes.func
+};
+
+Content.defaultProps = {
+    isPlaylist: false,
+    activeSongIndex: null,
+    isPlaying: false,
+    onSongStateChange: () => {},
+    onSongEdit: () => {},
+    onSongDelete: () => {},
+};
 
 export default Content;
