@@ -133,6 +133,31 @@
 .currently-playing-container {
   width: 20%;
   height: 100%;
+  padding-left: 1%;
+}
+
+.now-playing{
+  border-style: solid;
+  text-align: center;
+  color: white;
+  background-color: $blue;
+  
+}
+
+.song-info-display{
+  padding-top: 3%;
+  height: 70%;
+}
+
+.now-playing-title {
+  padding: 2px;
+  font-weight: bold;
+  font-size: 16px;
+  color: black;
+}
+
+.now-paying-artist{
+  font-size: 13px;
 }
 
 .volume-slide-container {
