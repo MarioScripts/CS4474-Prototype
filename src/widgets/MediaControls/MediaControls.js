@@ -127,8 +127,7 @@ class MediaControls extends React.Component {
         let volumeRender;
 
         let songList = Object.values(songs)
-        console.log(songList)
-
+        
         let currentSongTitle;
         let currentSongArtist;
 
