@@ -87,7 +87,7 @@
     "sass-loader": "^10.0.4",
     "style-loader": "^2.0.0",
     "wait-on": "^5.2.0",
-    "webpack": "^5.2.0",
+    "webpack": "^5.3.2",
     "webpack-cli": "^4.1.0",
     "webpack-copy-plugin": "0.0.4",
     "webpack-dev-middleware": "^3.7.2",

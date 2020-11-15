@@ -126,6 +126,17 @@ class MediaControls extends React.Component {
         let playPauseRender;
         let volumeRender;
 
+        let songList = Object.values(songs)
+        
+        let currentSongTitle;
+        let currentSongArtist;
+
+        if (songList.length > 0){
+            currentSongTitle = songList[songIndex].name;
+            currentSongArtist = songList[songIndex].artist;
+        }
+
+        
         if(songState === PLAYING) {
             playPauseRender = (
                 <div id="pause-button" className="media-icon">
@@ -158,13 +169,24 @@ class MediaControls extends React.Component {
         return (
             <div className="media-container">
                 <div className="currently-playing-container">
-                    Currently playing placeholder
+                    <div className="now-playing">
+                        Now Playing
+                    </div>
+                    <div className="song-info-display">
+                        <div className="now-playing-title">
+                            {currentSongTitle}
+                        </div>
+                        <div className="now-playing-artist">
+                            {currentSongArtist}
+                        </div>
+
+                    </div>
                 </div>
 
                 <div className="media-controls-container">
                     <div className="media-buttons-container">
                         <div className="skip-button media-icon">
-                            { skipButton(() => this.handleSkips(false)) }
+                            { skipButton(() => this.handleSkips(false))}
                         </div>
 
                         { playPauseRender }
