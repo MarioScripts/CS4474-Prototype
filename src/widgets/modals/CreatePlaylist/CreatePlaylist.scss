@@ -1,0 +1,50 @@
+@import "colors";
+
+.quick-add-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.new-playlist-name-container {
+  margin-top: 30px;
+  font-size: 20px;
+  display: flex;
+}
+
+.quick-add-header {
+  width: 200px;
+  border-bottom: 1px solid $blue;
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+
+.quick-add-dropdown-container {
+  display: flex;
+}
+
+.quick-add-container > div:not(:first-child) {
+  margin-left: 20px;
+}
+
+.quick-add-dropdown-container > div:nth-child(2) {
+  margin-left: 20px;
+}
+
+.quick-add-dropdown > :nth-child(1) {
+  margin-top: 5px;
+}
+
+.quick-add-songs-found {
+  margin-top: 20px;
+  color: $blue;
+  font-size: 18px;
+}
+
+.new-playlist-input {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  height: 53px;
+  color: $red;
+}

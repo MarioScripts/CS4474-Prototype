@@ -36,7 +36,7 @@ const expandSongsRec = async (songList) => {
                     expanded[song] = {
                         name: metadata.common.title || defaultName,
                         album: metadata.common.album,
-                        genre: metadata.common.genre,
+                        genre: metadata.common.genre ? metadata.common.genre[0] : "",
                         artist: metadata.common.albumartist,
                         duration: formatTime(metadata.format.duration),
                     };

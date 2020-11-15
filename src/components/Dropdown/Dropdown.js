@@ -44,22 +44,31 @@ class Dropdown extends React.Component {
     };
 
     handleClickOutside = (e) => {
-        if (this.componentRef && this.componentRef.current && !this.componentRef.current.contains(e.target)) {
+        if (this.componentRef
+            && this.componentRef.current
+            && !this.componentRef.current.contains(e.target)
+            && !this.componentRef.current.parentElement.contains(e.target)
+        ) {
             this.setState({
                 showOptions: false,
             });
         }
     };
 
-    handleSelectValue = (index) => {
-        const { options } = this.props;
+    handleSelectValue = (index, value) => {
+        const { options, onSelect, noSelect } = this.props;
         const { selectedIndex } = this.state;
 
         const isUnselect = index === selectedIndex;
-        this.setState({
-            selectedValue: isUnselect ? "" : options[index],
-            selectedIndex: isUnselect ? null : index,
-        });
+
+        if(!noSelect) {
+            this.setState({
+                selectedValue: isUnselect ? "" : options[index],
+                selectedIndex: isUnselect ? null : index,
+            });
+        }
+
+        onSelect(index, value, isUnselect);
     };
 
     render() {
@@ -68,6 +77,7 @@ class Dropdown extends React.Component {
             width,
             height,
             options,
+            noSelect,
         } = this.props;
 
         const {
@@ -78,15 +88,15 @@ class Dropdown extends React.Component {
 
         let contentRender;
 
-        if (showOptions) {
+        if (showOptions && options) {
             const optionsRender = [];
 
             options.forEach((o, index) => {
                 const isActive = selectedIndex !== null && selectedIndex === index;
                 optionsRender.push(
                     <div
-                        className={`dropdown-content${isActive ? " dropdown-content-active" : ""}`}
-                        onClick={() => this.handleSelectValue(index)}
+                        className={`dropdown-content${isActive ? " dropdown-content-active" : ""}${noSelect ? " no-select-dropdown" : ""}`}
+                        onClick={() => this.handleSelectValue(index, o)}
                     >
                         {o}
                     </div>
@@ -113,7 +123,7 @@ class Dropdown extends React.Component {
                     onClick={this.handleToggleShowOptions}
                     style={{  height: `${height}px`, width: `${width}px` }}
                 >
-                    { selectedValue || children }
+                    { noSelect ? children : selectedValue || children }
                     <div className="arrow-bottom"/>
                 </div>
                 { contentRender }
@@ -123,12 +133,15 @@ class Dropdown extends React.Component {
 }
 
 Dropdown.propTypes = {
-    height: PropTypes.number,
     options: PropTypes.array.isRequired,
+    children: PropTypes.object,
+    height: PropTypes.number,
+    noSelect: PropTypes.bool,
 };
 
 Dropdown.defaultProps = {
     height: 35,
+    noSelect: false,
 };
 
 export default Dropdown;

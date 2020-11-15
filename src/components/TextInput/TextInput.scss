@@ -6,9 +6,9 @@
 }
 
 .text-input:focus {
-  outline: 1px solid $blue;
+  border: 2px solid $blue;
 }
 
 .error-text-input {
-  outline: 1px solid $red !important;
+  border: 2px solid $red !important;
 }

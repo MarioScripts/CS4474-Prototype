@@ -3,31 +3,32 @@ import './NavBar.scss';
 import PropTypes from 'prop-types';
 import MenuItem from "../../components/MenuItem/MenuItem";
 import Button from "../../components/Button/Button";
-import Modal from "../../components/Modal/Modal";
 import CreatePlaylist from "../modals/CreatePlaylist/CreatePlaylist";
+const settings = window.require("electron-settings");
 
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            activePlaylist: "library",
             showNewPlaylistModal: false,
         };
     }
 
-    handleToggleModal = (state) => {
+    handleClosePlaylistModal = () => {
         this.setState({
-            showNewPlaylistModal: state
+            showNewPlaylistModal: false
+        });
+    };
+
+    handleOpenPlaylistModal = () => {
+        this.setState({
+            showNewPlaylistModal: true
         });
     };
 
     handleActivateItem = (playlist) => {
         const  { onChange, playlists, library } = this.props;
-
-        this.setState({
-            activePlaylist: playlist,
-        });
 
         if (playlist === "library") {
             onChange(library, playlist, false);
@@ -38,20 +39,29 @@ class NavBar extends React.Component {
     };
 
     render() {
-        const { activePlaylist, showNewPlaylistModal, songs } = this.state;
-        const { playlists } = this.props;
+        const { showNewPlaylistModal } = this.state;
+        const { playlists, songs, onCreatePlaylist, activePlaylist } = this.props;
 
         const playlistRenders = [];
-        for(const playlistName of Object.keys(playlists)) {
-            playlistRenders.push(
-                <MenuItem fontSize={16} active={playlistName === activePlaylist } onClick={() => this.handleActivateItem(playlistName)}>{playlistName}</MenuItem>
-            )
+
+        if (playlists) {
+            for(const playlistName of Object.keys(playlists)) {
+                playlistRenders.push(
+                    <MenuItem
+                        fontSize={16}
+                        active={playlistName === activePlaylist }
+                        onClick={() => this.handleActivateItem(playlistName)}>{playlistName}
+                    </MenuItem>
+                )
+            }
         }
+
         return (
             <div className="navbar-container">
                 <CreatePlaylist
                     isShowing={showNewPlaylistModal}
-                    onClose={() => this.handleToggleModal(false)}
+                    onClose={this.handleClosePlaylistModal}
+                    onCreate={onCreatePlaylist}
                     songs={songs}
                     playlists={playlists}
                 >
@@ -75,7 +85,7 @@ class NavBar extends React.Component {
                     height={10}
                     width={75}
                     fontSize={14}
-                    onClick={() => this.handleToggleModal(true)}
+                    onClick={this.handleOpenPlaylistModal}
                 >
                     New Playlist
                 </Button>
@@ -86,6 +96,8 @@ class NavBar extends React.Component {
 
 NavBar.propTypes = {
     playlists: PropTypes.object.isRequired,
+    onCreatePlaylist: PropTypes.func.isRequired,
+    activePlaylist: PropTypes.string.isRequired,
     songs: PropTypes.object.isRequired,
 };
 
