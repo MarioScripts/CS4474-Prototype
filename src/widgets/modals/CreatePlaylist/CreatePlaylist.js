@@ -14,6 +14,17 @@ class CreatePlaylist extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const { isShowing } = this.props;
+        const { isShowing: prevIsShowing } = prevProps;
+
+        if(prevIsShowing !== isShowing) {
+            console.log("wtf")
+            this.setState({
+                playlistName: "",
+            });
+        }
+    }
 
     handleNameChange = (name) => {
         this.setState({
@@ -29,6 +40,12 @@ class CreatePlaylist extends React.Component {
             onClose
         } = this.props;
 
+        const {
+            playlistName,
+        } = this.state;
+
+        const duplicateName = playlistName in playlists;
+
         return (
             <Modal
                 width={700}
@@ -37,9 +54,9 @@ class CreatePlaylist extends React.Component {
                 text="Create"
                 isShowing={isShowing}
                 onClose={onClose}
-                disablePrimary={true}
+                disablePrimary={!playlistName || duplicateName}
             >
-                <TextInput width={250} autoFocus onChange={this.handleNameChange} showError/>
+                <TextInput width={250} autoFocus onChange={this.handleNameChange} showError={duplicateName}/>
             </Modal>
         );
     }
