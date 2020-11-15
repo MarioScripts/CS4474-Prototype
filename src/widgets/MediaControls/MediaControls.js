@@ -133,7 +133,7 @@ class MediaControls extends React.Component {
         let currentSongArtist;
 
         if (songList.length > 0){
-            currentSongTitle = songList[songIndex].title;
+            currentSongTitle = songList[songIndex].name;
             currentSongArtist = songList[songIndex].artist;
         }
 
