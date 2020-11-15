@@ -3,7 +3,12 @@ import './CreatePlaylist.scss';
 import PropTypes from 'prop-types';
 import Modal from "../../../components/Modal/Modal";
 import TextInput from "../../../components/TextInput/TextInput";
+import Dropdown from "../../../components/Dropdown/Dropdown";
 
+const typeOptions = [
+    "Artist",
+    "Genre"
+];
 class CreatePlaylist extends React.Component {
 
     constructor(props) {
@@ -14,12 +19,11 @@ class CreatePlaylist extends React.Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps) {
         const { isShowing } = this.props;
         const { isShowing: prevIsShowing } = prevProps;
 
         if(prevIsShowing !== isShowing) {
-            console.log("wtf")
             this.setState({
                 playlistName: "",
             });
@@ -57,6 +61,17 @@ class CreatePlaylist extends React.Component {
                 disablePrimary={!playlistName || duplicateName}
             >
                 <TextInput width={250} autoFocus onChange={this.handleNameChange} showError={duplicateName}/>
+
+                <Dropdown
+                    width={70}
+                    options={typeOptions}
+                    height={30}
+                >
+                    None
+                </Dropdown>
+
+                
+                test
             </Modal>
         );
     }
