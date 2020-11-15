@@ -44,7 +44,7 @@ const expandSongsRec = async (songList) => {
 
             }
         } catch (err) {
-            console.log("Error reading file, skipping...");
+            console.log("Error reading file, skipping...", err);
         }
     }
 
