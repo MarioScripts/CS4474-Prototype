@@ -16,7 +16,7 @@ class App extends React.Component {
         this.player = React.createRef();
         this.state = {
             activeSongList: {},
-            activeSongIndex: 0,
+            activeSongIndex: null,
             viewableSongList: {},
             librarySongList: {},
             activeKey: "library",
