@@ -149,13 +149,14 @@ class App extends React.Component {
         });
     };
 
-    handleShowAddSongModal = (isPlaylist) => {
+    handleShowAddSongModal = (isPlaylist, selectedIndex) => {
         if (isPlaylist) {
             this.setState({
                 showAddPlaylistSong: true,
             });
         } else {
             // TODO: Handle library add
+            // 0 selectedIndex = add file, 1 selectedIndex = add folder
         }
     };
 

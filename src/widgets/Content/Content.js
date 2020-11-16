@@ -9,6 +9,11 @@ import { faMusic } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../../components/Dropdown/Dropdown";
 
 class Content extends React.Component {
+    handleButtonClick = (index) => {
+        const { isPlaylist, onAddSong } = this.props;
+        onAddSong(isPlaylist, index);
+    };
+
     render() {
         const {
             songs,
@@ -20,7 +25,6 @@ class Content extends React.Component {
             onSongStateChange,
             onSongEdit,
             onSongDelete,
-            onAddSong,
         } = this.props;
         const songLength = Object.keys(songs).length;
 
@@ -28,7 +32,7 @@ class Content extends React.Component {
 
         if(isPlaylist) {
             addButtonRender = (
-                <Button className="inverse-button addsong-button" onClick={() => onAddSong(isPlaylist)} width={8} disabled={disableAddSong}>
+                <Button className="inverse-button addsong-button" onClick={this.handleButtonClick} width={8} disabled={disableAddSong}>
                     <div className="add-song-text">
                         +
                     </div>
@@ -37,7 +41,7 @@ class Content extends React.Component {
             );
         } else {
             addButtonRender = (
-                <Dropdown className="addsong-button" options={["Add Files", "Add Folder"]} noSelect height={33}>
+                <Dropdown className="addsong-button" options={["Add Files", "Add Folder"]} noSelect height={33} onSelect={this.handleButtonClick}>
                     <div className="add-song-text">
                         +
                     </div>
