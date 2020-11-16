@@ -205,16 +205,15 @@ class MediaControls extends React.Component {
         let playPauseRender;
         let volumeRender;
 
-        let songList = Object.values(songs)
+        let songList = Object.values(songs);
         
         let currentSongTitle;
         let currentSongArtist;
 
-        if (songList.length > 0){
+        if (songList.length > 0 && songIndex !== null){
             currentSongTitle = songList[songIndex].name;
             currentSongArtist = songList[songIndex].artist;
         }
-
         
         if(songState === PLAYING) {
             playPauseRender = (
@@ -248,7 +247,10 @@ class MediaControls extends React.Component {
         return (
             <div className="media-container">
                 <div className="currently-playing-container">
-                    <div className="now-playing">
+                    <div
+                        className="now-playing"
+                        style={{ display: currentSongTitle ? "flex" : "none" }}
+                    >
                         Now Playing
                     </div>
                     <div className="song-info-display">

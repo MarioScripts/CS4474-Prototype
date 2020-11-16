@@ -29,6 +29,7 @@
     "electron-context-menu": "^2.3.0",
     "electron-is-dev": "^1.2.0",
     "electron-settings": "^4.0.2",
+    "lodash.isequal": "^4.5.0",
     "music-metadata": "^7.5.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
