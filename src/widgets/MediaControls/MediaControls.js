@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player/lazy';
 import {formatTime, PAUSED, PLAYING} from "../../utils/songUtils";
 import {pauseSvg, playSvg, prevButton, skipButton, volumeMuteSvg, volumeSvg} from "../../utils/iconUtils";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faRandom } from "@fortawesome/free-solid-svg-icons";
 
 class MediaControls extends React.Component {
     constructor(props) {
@@ -204,6 +206,7 @@ class MediaControls extends React.Component {
         const { songProgress, songDuration, seekingInProgress, songVolume, songMuted, shuffleMode} = this.state;
         let playPauseRender;
         let volumeRender;
+        let shuffleButtonRender;
 
         let songList = Object.values(songs);
         
@@ -215,6 +218,30 @@ class MediaControls extends React.Component {
             currentSongArtist = songList[songIndex].artist;
         }
         
+        if(shuffleMode){
+            const style = {
+                color : 'white',
+                background : 'rgb(0, 93, 255)',
+            };
+
+            shuffleButtonRender =(
+                <div className="shuffle-button-container ">
+                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={style}></FontAwesomeIcon>
+                </div>
+            );
+        }else{
+            const style = {
+                color : 'rgb(0, 93, 255)',
+            };
+
+            shuffleButtonRender =(
+                <div className="shuffle-button-container ">
+                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={style}></FontAwesomeIcon>
+                </div>
+            );
+
+        }
+
         if(songState === PLAYING) {
             playPauseRender = (
                 <div id="pause-button" className="media-icon">
@@ -265,9 +292,7 @@ class MediaControls extends React.Component {
                 </div>
 
                 <div className="media-controls-container">
-                    <div className="shuffle-button-container ">
-                        <button onClick={this.handleShuffleState} style={{color : shuffleMode ? 'blue' : 'black'}}> Shuffle </button>
-                    </div>
+                    {shuffleButtonRender}
                     <div className="media-buttons-container">
                         <div className="skip-button media-icon">
                             { skipButton(() => this.handleSkips(false))}
