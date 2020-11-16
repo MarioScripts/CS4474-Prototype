@@ -207,6 +207,7 @@ class MediaControls extends React.Component {
         let playPauseRender;
         let volumeRender;
         let shuffleButtonRender;
+        let shuffleButtonStyle;
 
         let songList = Object.values(songs);
         
@@ -219,24 +220,24 @@ class MediaControls extends React.Component {
         }
         
         if(shuffleMode){
-            const style = {
+            shuffleButtonStyle = {
                 color : 'white',
                 background : 'rgb(0, 93, 255)',
             };
 
             shuffleButtonRender =(
                 <div className="shuffle-button-container ">
-                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={style}></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={shuffleButtonStyle}></FontAwesomeIcon>
                 </div>
             );
         }else{
-            const style = {
+            shuffleButtonStyle = {
                 color : 'rgb(0, 93, 255)',
             };
 
             shuffleButtonRender =(
                 <div className="shuffle-button-container ">
-                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={style}></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={shuffleButtonStyle}></FontAwesomeIcon>
                 </div>
             );
 
