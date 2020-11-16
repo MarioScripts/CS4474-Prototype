@@ -64,9 +64,9 @@ class AddPlaylistSong extends React.Component {
 
         return (
             <Modal
-
+                class
                 width={800}
-                height={800}
+                height="80vh"
                 title="Add Songs"
                 isShowing={isShowing}
                 text="Add"
