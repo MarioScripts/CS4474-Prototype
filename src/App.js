@@ -9,15 +9,6 @@ const dialog = window.require("electron").remote.dialog;
 import {expandSongs, PAUSED, PLAYING} from "./utils/songUtils";
 import Content from "./widgets/Content/Content";
 
-// Mock data for now, just to test some stuff
-const playlists = {
-    "Playlist 1": [
-        "C:\\Users\\Matt\\Desktop\\songs\\Yoo\\yoo3\\megaman_2_dr_wily.mp3"
-    ],
-    "Playlist 2": [
-        "C:\\Users\\Matt\\Desktop\\songs\\Yoo\\yoo3\\megaman_2_dr_wily.mp3"
-    ],
-};
 
 class App extends React.Component {
     constructor(props) {
@@ -25,12 +16,14 @@ class App extends React.Component {
         this.player = React.createRef();
         this.state = {
             activeSongList: {},
-            activeSongIndex: 0,
+            activeSongIndex: null,
             viewableSongList: {},
+            librarySongList: {},
             activeKey: "library",
             viewableKey: "library",
             songState: PAUSED,
             isPlaylist: false,
+            playlists: null,
             firstTimeSetup: false,
         }
     }
@@ -43,9 +36,12 @@ class App extends React.Component {
             });
         } else {
             const songList = await this.createSongList();
+
             this.setState({
                 activeSongList: songList,
                 viewableSongList: songList,
+                librarySongList: songList,
+                playlists: settings.getSync("playlists"),
             });
         }
     }
@@ -74,16 +70,21 @@ class App extends React.Component {
             filesSelected.filePaths.forEach((path) => {
                 library.push(path);
             });
+
+            await settings.set("library", library);
+
+            const songList = await this.createSongList();
+            this.setState({
+                firstTimeSetup: false,
+                activeSongList: songList,
+                viewableSongList: songList,
+                librarySongList: songList,
+            });
+        } else {
+            this.setState({
+                firstTimeSetup: false,
+            });
         }
-
-        await settings.set("library", library);
-
-        const songList = await this.createSongList();
-        this.setState({
-            firstTimeSetup: false,
-            activeSongList: songList,
-            viewableSongList: songList,
-        });
     };
 
     handleSongIndexChange = (newIndex) => {
@@ -132,14 +133,31 @@ class App extends React.Component {
         // TODO: Delete song (different functionality based on if isPlaylist or not)
     };
 
+    handleCreateSongPlaylist = async (name, songList) => {
+        const currentPlaylists = settings.getSync("playlists") || {};
+        currentPlaylists[name] = songList;
+
+        settings.setSync("playlists", currentPlaylists);
+
+        this.setState({
+            playlists: currentPlaylists,
+            viewableKey: name,
+            viewableSongList: await this.createSongList(songList),
+        });
+    };
+
     render() {
-        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState } = this.state;
+        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState, librarySongList, playlists } = this.state;
+
         return (
             <div className="container">
                 <NavBar
                     onChange={this.handleNavChange}
                     playlists={playlists}
                     library={settings.getSync("library")}
+                    songs={librarySongList}
+                    onCreatePlaylist={this.handleCreateSongPlaylist}
+                    activePlaylist={viewableKey}
                 />
 
                 <Modal
