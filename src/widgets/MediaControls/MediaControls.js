@@ -118,6 +118,7 @@ class MediaControls extends React.Component {
         const {shuffleMode} = this.state;
         this.setState({
             shuffleMode : !shuffleMode,
+            shuffleList : [],
         });
     };
 
@@ -309,6 +310,7 @@ class MediaControls extends React.Component {
                             className="slider"
                             onChange={this.handleVolumeChange}
                         />
+                        <output className="volumeValue" style={{left:`calc(${14}% + ${songVolume + 7}px)` }}>{songVolume}%</output>
                     </div>
                 </div>
 
