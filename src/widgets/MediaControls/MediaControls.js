@@ -59,7 +59,6 @@ class MediaControls extends React.Component {
         const { songs, onIndexChange, songIndex, onSongStateChange } = this.props;
         const {shuffleMode, shuffleList} = this.state;
 
-        //need to check if we are in shuffle mode
         const songLength = Object.keys(songs).length;
 
         let shuffleSongs = shuffleList;
