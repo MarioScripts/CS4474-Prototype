@@ -78,6 +78,7 @@ class Dropdown extends React.Component {
             height,
             options,
             noSelect,
+            className,
         } = this.props;
 
         const {
@@ -115,7 +116,7 @@ class Dropdown extends React.Component {
 
         return (
             <div
-                className="dropdown-container"
+                className={`dropdown-container${className ? ` ${className}` : ""}`}
                 style={{  height: `${height}px` }}
             >
                 <div

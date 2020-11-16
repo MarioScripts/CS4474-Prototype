@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import Button from "../../components/Button/Button";
 import {playSvg} from "../../utils/iconUtils";
 import SongList from "../../components/SongList/SongList";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faMusic } from "@fortawesome/free-solid-svg-icons";
+import Dropdown from "../../components/Dropdown/Dropdown";
 
 class Content extends React.Component {
     render() {
@@ -11,13 +14,37 @@ class Content extends React.Component {
             songs,
             isPlaylist,
             isPlaying,
+            disableAddSong,
             activeSongIndex,
             onPlayAll,
             onSongStateChange,
             onSongEdit,
             onSongDelete,
+            onAddSong,
         } = this.props;
         const songLength = Object.keys(songs).length;
+
+        let addButtonRender;
+
+        if(isPlaylist) {
+            addButtonRender = (
+                <Button className="inverse-button addsong-button" onClick={() => onAddSong(isPlaylist)} width={8} disabled={disableAddSong}>
+                    <div className="add-song-text">
+                        +
+                    </div>
+                    <FontAwesomeIcon icon={faMusic}/>
+                </Button>
+            );
+        } else {
+            addButtonRender = (
+                <Dropdown className="addsong-button" options={["Add Files", "Add Folder"]} noSelect height={33}>
+                    <div className="add-song-text">
+                        +
+                    </div>
+                    <FontAwesomeIcon icon={faMusic}/>
+                </Dropdown>
+            )
+        }
 
         return (
             <div className="content">
@@ -32,6 +59,9 @@ class Content extends React.Component {
                             </div>
                             Play All
                         </Button>
+
+                        {addButtonRender}
+
                     </div>
                     <div className="bottom-row">
 
@@ -58,18 +88,22 @@ Content.propTypes = {
     isPlaylist: PropTypes.bool,
     activeSongIndex: PropTypes.number,
     isPlaying: PropTypes.bool,
+    disableAddSong: PropTypes.bool,
     onSongStateChange: PropTypes.func,
     onSongEdit: PropTypes.func,
-    onSongDelete: PropTypes.func
+    onSongDelete: PropTypes.func,
+    onAddSong: PropTypes.func,
 };
 
 Content.defaultProps = {
     isPlaylist: false,
     activeSongIndex: null,
     isPlaying: false,
+    disableAddSong: false,
     onSongStateChange: () => {},
     onSongEdit: () => {},
     onSongDelete: () => {},
+    onAddSong: () => {},
 };
 
 export default Content;

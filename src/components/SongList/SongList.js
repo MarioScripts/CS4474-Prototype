@@ -1,11 +1,36 @@
 import React from 'react';
 import './SongList.scss';
 import PropTypes from 'prop-types';
-import Button from "../Button/Button";
 import {deleteSvg, editSvg, pauseSvg, playSvg} from "../../utils/iconUtils";
 import {PAUSED, PLAYING} from "../../utils/songUtils";
 
 class SongList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selected: new Set(),
+        };
+    }
+
+    handleSelection = (songPath) => {
+        const { selected } = this.state;
+        const { onSelectedChange } = this.props;
+        const isUnselected = selected.has(songPath);
+
+        if (isUnselected) {
+            selected.delete(songPath)
+        } else {
+            selected.add(songPath);
+        }
+
+        this.setState({
+            selected,
+        });
+
+        if(onSelectedChange) {
+            onSelectedChange([...selected]);
+        }
+    };
 
     render() {
         const {
@@ -15,20 +40,24 @@ class SongList extends React.Component {
             onSongStateChange,
             onSongEdit,
             onSongDelete,
+            selectedRowCss,
+            showActive,
+            showActions,
+            className,
         } = this.props;
 
+        const { selected } = this.state;
+
         const songRows = [];
-        Object.values(songs).forEach((song, index) => {
-            const isActive = activeSongIndex !== null && activeSongIndex === index;
+        Object.entries(songs).forEach(([songPath, song], index) => {
+            const isActive = activeSongIndex !== null && activeSongIndex === index && showActive;
+            const isSelected = selected.has(songPath);
             const showPauseIcon = isPlaying && isActive;
             const playPauseOnClick = () => onSongStateChange(index, showPauseIcon ? PAUSED : PLAYING);
 
-            songRows.push(
-                <tr className={isActive ? "song-active-row" : ""} onDoubleClick={playPauseOnClick}>
-                    <td>{ song.name }</td>
-                    <td>{ song.artist || "--" }</td>
-                    <td>{ song.genre || "--" }</td>
-                    <td>{ song.duration }</td>
+            let actionsRender;
+            if (showActions) {
+                actionsRender = (
                     <td className="song-actions-col">
                         <div className="actions-container">
                             <div className={`${showPauseIcon ? "pause" : "play"}-icon${isActive ?  ` ${showPauseIcon ? "pause" : "play"}-icon-active` : ""}`}>
@@ -43,21 +72,40 @@ class SongList extends React.Component {
                         </div>
 
                     </td>
+                );
+            }
+
+            songRows.push(
+                <tr
+                    className={(isActive ? "song-active-row" : "") + (isSelected ? ` ${selectedRowCss}` : "")}
+                    onClick={() => this.handleSelection(songPath)}
+                    onDoubleClick={playPauseOnClick}
+                >
+                    <td>{ song.name }</td>
+                    <td>{ song.artist || "--" }</td>
+                    <td>{ song.genre || "--" }</td>
+                    <td>{ song.duration }</td>
+                    { actionsRender }
                 </tr>
-            )
+            );
         });
 
         return (
-            <div className="songs-container">
+            <div className={`songs-container${className ? ` ${className}` : ""}`}>
                 <table id="songs-table">
-                    <tr>
-                        <th className="song-reg-header">Name</th>
-                        <th className="song-reg-header">Artist</th>
-                        <th className="song-reg-header">Genre</th>
-                        <th className="song-reg-header">Length</th>
-                        <th className="song-actions-col">Actions</th>
-                    </tr>
-                    { songRows }
+                    <thead>
+                        <tr>
+                            <th className="song-reg-header">Name</th>
+                            <th className="song-reg-header">Artist</th>
+                            <th className="song-reg-header">Genre</th>
+                            <th className="song-reg-header">Length</th>
+                            { showActions && <th className="song-actions-col">Actions</th> }
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        { songRows }
+                    </tbody>
                 </table>
             </div>
         );
@@ -71,11 +119,19 @@ SongList.propTypes = {
     onSongStateChange: PropTypes.func,
     onSongEdit: PropTypes.func,
     onSongDelete: PropTypes.func,
+    onSelectedChange: PropTypes.func,
+    selectedRowCss: PropTypes.string,
+    showActive: PropTypes.bool,
+    showActions: PropTypes.bool,
+    className: PropTypes.string,
 };
 
 SongList.defaultProps = {
     activeSongIndex: null,
     isPlaying: false,
+    showActive: true,
+    showActions: true,
+    selectedRowCss: "selected-row"
 };
 
 export default SongList;

@@ -218,7 +218,9 @@ class MediaControls extends React.Component {
                 <div className="volume-container">
                     { volumeRender }
                     <div className="volume-slide-container">
+                        
                         <input
+                            name="volume"
                             type="range"
                             min={0}
                             max={100}
@@ -227,6 +229,7 @@ class MediaControls extends React.Component {
                             className="slider"
                             onChange={this.handleVolumeChange}
                         />
+                        <output htmlFor="volume" onforminput="value = volume.valueAsNumber;"></output>
                     </div>
                 </div>
 

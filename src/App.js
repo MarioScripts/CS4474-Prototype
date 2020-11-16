@@ -8,6 +8,7 @@ const settings = window.require("electron-settings");
 const dialog = window.require("electron").remote.dialog;
 import {expandSongs, PAUSED, PLAYING} from "./utils/songUtils";
 import Content from "./widgets/Content/Content";
+import AddPlaylistSong from "./widgets/modals/AddPlaylistSong/AddPlaylistSong";
 
 
 class App extends React.Component {
@@ -25,6 +26,8 @@ class App extends React.Component {
             isPlaylist: false,
             playlists: null,
             firstTimeSetup: false,
+
+            showAddPlaylistSong: false,
         }
     }
 
@@ -146,8 +149,39 @@ class App extends React.Component {
         });
     };
 
+    handleShowAddSongModal = (isPlaylist) => {
+        if (isPlaylist) {
+            this.setState({
+                showAddPlaylistSong: true,
+            });
+        } else {
+            // TODO: Handle library add
+        }
+    };
+
+    handleCloseAddPlaylistSongModal = () => {
+        this.setState({
+            showAddPlaylistSong: false,
+        });
+    };
+
+    handleAddPlaylistSongs = async (songs) => {
+        const { viewableKey } = this.state;
+        const playlists = settings.getSync("playlists");
+        const playlistSongs = playlists[viewableKey];
+        const newSongList = playlistSongs.concat(songs);
+
+        playlists[viewableKey] = newSongList;
+        settings.setSync("playlists", playlists);
+
+        this.setState({
+            viewableSongList: await this.createSongList(newSongList),
+            showAddPlaylistSong: false,
+        });
+    };
+
     render() {
-        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState, librarySongList, playlists } = this.state;
+        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState, librarySongList, playlists, showAddPlaylistSong } = this.state;
 
         return (
             <div className="container">
@@ -158,6 +192,14 @@ class App extends React.Component {
                     songs={librarySongList}
                     onCreatePlaylist={this.handleCreateSongPlaylist}
                     activePlaylist={viewableKey}
+                />
+
+                <AddPlaylistSong
+                    songs={librarySongList}
+                    playlistSongs={viewableSongList}
+                    isShowing={showAddPlaylistSong}
+                    onClose={this.handleCloseAddPlaylistSongModal}
+                    onAddSongs={this.handleAddPlaylistSongs}
                 />
 
                 <Modal
@@ -180,9 +222,11 @@ class App extends React.Component {
                     activeSongIndex={activeKey === viewableKey ? activeSongIndex : null}
                     onPlayAll={this.handlePlayAll}
                     isPlaying={songState === PLAYING}
+                    disableAddSong={Object.keys(viewableSongList).length === Object.keys(librarySongList).length}
                     onSongStateChange={this.handleSongChange}
                     onSongEdit={this.handleSongEdit}
                     onSongDelete={this.handleSongDelete}
+                    onAddSong={this.handleShowAddSongModal}
                 />
 
                 <div className="controls">
