@@ -1,21 +1,30 @@
 @import "colors";
 
 #songs-table {
-  width: 100%;
-  height: 100%;
-  padding: 0 120px;
+  width: calc(100% - 240px);
+  margin: 0 120px;
   border-spacing: 0;
 }
 
 #songs-table th {
+  height: 20px;
   padding-bottom: 8px;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 9;
 }
 
-#songs-table > tr:not(:first-child) {
+.songs-container {
+  height: calc(100vh - 50px - 150px - 94px);
+  overflow-y: auto;
+}
+
+#songs-table > tbody > tr {
   height: 48px;
 }
 
-#songs-table > tr:not(:first-child):not(.song-active-row):hover {
+#songs-table tbody > tr:not(.song-active-row):hover {
   background-color: $hover-blue;
 }
 
@@ -23,11 +32,11 @@
   border-bottom: 1px solid $blue;
 }
 
-#songs-table > tr:nth-child(2) > td {
+#songs-table tr:nth-child(2) > td {
   margin-top: 50px;
 }
 
-#songs-table > tr > td:nth-child(1), #songs-table > tr > th:nth-child(1) {
+#songs-table td:nth-child(1), #songs-table th:nth-child(1) {
   padding-left: 10px;
 }
 
@@ -41,8 +50,8 @@
 }
 
 .song-active-row {
-  background-color: $blue;
-  color: white;
+  background-color: $blue !important;
+  color: white !important;
 }
 
 .play-icon, .edit-icon, .pause-icon, .delete-icon {
@@ -112,4 +121,8 @@
 .actions-container {
   justify-content: center;
   display: flex;
+}
+
+.selected-row {
+  background: $hover-blue;
 }
