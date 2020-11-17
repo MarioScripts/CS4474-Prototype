@@ -112,6 +112,10 @@
   opacity: 1;
 }
 
+.slider:hover + .volumeValue{
+  display: block;
+}
+
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -124,6 +128,7 @@
 }
 
 .volume-container {
+  position: relative;
   display: flex;
   align-items: flex-end;
   width: 20%;
@@ -165,4 +170,25 @@
   align-items: center;
   width: 150px;
   height: 20px;
+}
+
+
+.volumeValue {
+  display: none;
+  position: absolute;
+  background: white;
+  color: black;
+  padding: 4px 12px;
+  transform: translateX(-50%);
+  border: thin solid black;
+  top: 33%;
+  font-size: 12.5px;
+  
+}
+
+
+.shuffle-button-icon{
+  font-size: 18px;
+  padding: 5px;
+  border-radius: 20%;
 }

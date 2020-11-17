@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player/lazy';
 import {formatTime, PAUSED, PLAYING} from "../../utils/songUtils";
 import {pauseSvg, playSvg, prevButton, skipButton, volumeMuteSvg, volumeSvg} from "../../utils/iconUtils";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faRandom } from "@fortawesome/free-solid-svg-icons";
 
 class MediaControls extends React.Component {
     constructor(props) {
@@ -16,6 +18,8 @@ class MediaControls extends React.Component {
             songVolume: 50,
             songMuted: false,
             seekingInProgress: false,
+            shuffleMode : false,
+            shuffleList : [],
         };
     }
 
@@ -55,13 +59,36 @@ class MediaControls extends React.Component {
 
     handleSongEnd = () => {
         const { songs, onIndexChange, songIndex, onSongStateChange } = this.props;
+        const {shuffleMode, shuffleList} = this.state;
+
         const songLength = Object.keys(songs).length;
 
-        if (songIndex >= songLength - 1) {
-            onSongStateChange(PAUSED);
-        } else {
-            onIndexChange((songIndex + 1) % songLength);
+        let shuffleSongs = shuffleList;
+        if (shuffleMode){
+            if (shuffleSongs.length >= songLength - 1){
+                this.handleShuffleState();
+                onSongStateChange(PAUSED);
+            }else{
+                shuffleSongs.push(songIndex);
+
+                let nxtIndex = this.getRandomIndex(songLength);
+                while(shuffleSongs.includes(nxtIndex)){
+                    nxtIndex = this.getRandomIndex(songLength);
+                }
+
+                this.setShuffleList(shuffleSongs);
+                onIndexChange(nxtIndex);
+            }
+
+        }else{
+            if (songIndex >= songLength - 1) {
+                onSongStateChange(PAUSED);
+            } else {
+                onIndexChange((songIndex + 1) % songLength);
+            }
         }
+
+        
     };
 
     handleSeekChange = (e) => {
@@ -87,21 +114,74 @@ class MediaControls extends React.Component {
         });
     };
 
+    handleShuffleState = () => {
+        const {shuffleMode} = this.state;
+        this.setState({
+            shuffleMode : !shuffleMode,
+            shuffleList : [],
+        });
+    };
+
+    setShuffleList = (list=[]) => {
+        this.setState({
+            shuffleList : list,
+        });
+    }
+
+    getRandomIndex = (max) => {
+        return Math.floor(Math.random() * max);
+    }
+
     handleSkips = (next) => {
-        const { songs, onIndexChange, songIndex } = this.props;
+        const { songs, onIndexChange, onSongStateChange, songIndex } = this.props;
+        const {shuffleMode, shuffleList} = this.state;
 
         let newIndex = songIndex;
         let needsUpdate = true;
+
+        let shuffleSongs = shuffleList;
+        const numSongs = Object.keys(songs).length;
         if(next) {
-            newIndex = (newIndex + 1) % Object.keys(songs).length;
-        } else {
-            newIndex = newIndex - 1;
-            if (newIndex < 0 && songIndex !== 0) {
-                newIndex = 0;
-            } else if (newIndex < 0 && songIndex === 0) {
-                needsUpdate = false;
-                this.player.seekTo(0);
+            if (shuffleMode){
+                
+                if (shuffleSongs.length >= numSongs-1){
+                    onSongStateChange(PAUSED);
+                    this.handleShuffleState();
+
+                }else {
+                    shuffleSongs.push(newIndex);
+
+                    let nxtIndex = this.getRandomIndex(numSongs);
+
+                    while (shuffleSongs.includes(nxtIndex)){
+                        nxtIndex = this.getRandomIndex(numSongs);
+                    }
+                    newIndex = nxtIndex;
+                    this.setShuffleList(shuffleSongs);
+                }
+            }else{
+                newIndex = (newIndex + 1) % numSongs;
             }
+        } else {
+            if (shuffleMode){
+                if (shuffleSongs.length > 0){
+                    newIndex = shuffleSongs.pop();
+                    this.setShuffleList(shuffleSongs);
+                }else{
+                    needsUpdate = false;
+                    this.player.seekTo(0);
+                    this.setShuffleList();
+                }
+            }else{
+                newIndex = newIndex - 1;
+                if (newIndex < 0 && songIndex !== 0) {
+                    newIndex = 0;
+                } else if (newIndex < 0 && songIndex === 0) {
+                    needsUpdate = false;
+                    this.player.seekTo(0);
+                }
+            }
+            
         }
 
         if (needsUpdate) {
@@ -122,9 +202,11 @@ class MediaControls extends React.Component {
             onSongStateChange,
         } = this.props;
 
-        const { songProgress, songDuration, seekingInProgress, songVolume, songMuted } = this.state;
+        const { songProgress, songDuration, seekingInProgress, songVolume, songMuted, shuffleMode} = this.state;
         let playPauseRender;
         let volumeRender;
+        let shuffleButtonRender;
+        let shuffleButtonStyle;
 
         let songList = Object.values(songs);
         
@@ -136,6 +218,30 @@ class MediaControls extends React.Component {
             currentSongArtist = songList[songIndex].artist;
         }
         
+        if(shuffleMode){
+            shuffleButtonStyle = {
+                color : 'white',
+                background : 'rgb(0, 93, 255)',
+            };
+
+            shuffleButtonRender =(
+                <div className="shuffle-button-container ">
+                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={shuffleButtonStyle}></FontAwesomeIcon>
+                </div>
+            );
+        }else{
+            shuffleButtonStyle = {
+                color : 'rgb(0, 93, 255)',
+            };
+
+            shuffleButtonRender =(
+                <div className="shuffle-button-container ">
+                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={shuffleButtonStyle}></FontAwesomeIcon>
+                </div>
+            );
+
+        }
+
         if(songState === PLAYING) {
             playPauseRender = (
                 <div id="pause-button" className="media-icon">
@@ -186,6 +292,7 @@ class MediaControls extends React.Component {
                 </div>
 
                 <div className="media-controls-container">
+                    {shuffleButtonRender}
                     <div className="media-buttons-container">
                         <div className="skip-button media-icon">
                             { skipButton(() => this.handleSkips(false))}
@@ -229,6 +336,7 @@ class MediaControls extends React.Component {
                             className="slider"
                             onChange={this.handleVolumeChange}
                         />
+                        <output className="volumeValue" style={{left:`calc(${14}% + ${songVolume + 7}px)` }}>{songVolume}%</output>
                     </div>
                 </div>
 
