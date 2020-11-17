@@ -1,7 +1,6 @@
 @import "colors";
 
 .content {
-  height: calc(100vh - 50px - 150px);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -20,6 +19,10 @@
   height: 50%;
 }
 
+.content-info-container .bottom-row {
+
+}
+
 .song-number {
   width: 150px;
   font-size: 35px;
@@ -34,8 +37,6 @@
   margin-right: -10px;
   width: 58px;
 }
-
-
 
 .playall-icon path {
   fill: white;
@@ -53,22 +54,8 @@
   margin-left: 30px;
 }
 
-.addsong-button {
-  height: 15px;
-  margin-top: 10px;
-  margin-left: 20px;
-  color: $blue;
-}
-
-.add-song-text {
-  font-weight: 700;
-  font-size: 20px;
-  margin-right: 5px;
-}
-
 .song-list-separator {
   margin: 0 30px -30px 30px;
   height: 1px;
   background: $blue;
-  z-index: 10;
 }

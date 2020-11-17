@@ -18,7 +18,7 @@ class Button extends React.Component {
 
         return (
             <div
-                className={(disabled ? 'button disabled-button' : `button`) + (className ? " " + className : '')}
+                className={disabled ? 'button disabled-button' : `button${className ? " " + className : ''}`}
                 style={{width, height, fontSize, ...style}}
                 onClick={disabled ? null : onClick}
             >

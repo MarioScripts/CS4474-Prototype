@@ -66,10 +66,6 @@ class Dropdown extends React.Component {
                 selectedValue: isUnselect ? "" : options[index],
                 selectedIndex: isUnselect ? null : index,
             });
-        } else {
-            this.setState({
-                showOptions: false,
-            });
         }
 
         onSelect(index, value, isUnselect);
@@ -82,7 +78,6 @@ class Dropdown extends React.Component {
             height,
             options,
             noSelect,
-            className,
         } = this.props;
 
         const {
@@ -120,7 +115,7 @@ class Dropdown extends React.Component {
 
         return (
             <div
-                className={`dropdown-container${className ? ` ${className}` : ""}`}
+                className="dropdown-container"
                 style={{  height: `${height}px` }}
             >
                 <div
@@ -142,13 +137,11 @@ Dropdown.propTypes = {
     children: PropTypes.object,
     height: PropTypes.number,
     noSelect: PropTypes.bool,
-    onSelect: PropTypes.func,
 };
 
 Dropdown.defaultProps = {
     height: 35,
     noSelect: false,
-    onSelect: () => {},
 };
 
 export default Dropdown;

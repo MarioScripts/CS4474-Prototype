@@ -23,7 +23,7 @@
 
 .inverse-button {
     border-style: solid;
-    border-width: 1px;
+    border-width: 2px;
     background-color: white;
     border-color: $blue;
     color: $blue;
@@ -38,20 +38,6 @@
 
 .disabled-button {
     cursor: not-allowed;
-    background-color: $disabled-background !important;
-    color: $disabled-text !important;
-    border-color: $disabled-background;
-}
-
-.disabled-button:hover {
-    border-color: $disabled-background;
-}
-
-.add-song-no-songs-error {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    font-size: 30px;
-    font-weight: 800;
+    background-color: $disabled-background;
+    color: $disabled-text;
 }
