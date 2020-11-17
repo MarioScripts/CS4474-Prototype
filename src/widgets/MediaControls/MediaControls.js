@@ -66,8 +66,7 @@ class MediaControls extends React.Component {
         let shuffleSongs = shuffleList;
         if (shuffleMode){
             if (shuffleSongs.length >= songLength - 1){
-                this.setShuffleList();
-                
+                this.handleShuffleState();
                 onSongStateChange(PAUSED);
             }else{
                 shuffleSongs.push(songIndex);
@@ -147,7 +146,7 @@ class MediaControls extends React.Component {
                 
                 if (shuffleSongs.length >= numSongs-1){
                     onSongStateChange(PAUSED);
-                    this.setShuffleList();
+                    this.handleShuffleState();
 
                 }else {
                     shuffleSongs.push(newIndex);
