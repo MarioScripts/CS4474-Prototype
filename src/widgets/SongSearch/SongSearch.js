@@ -27,10 +27,10 @@ class SongSearch extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { options } = this.props;
-        const { options: prevOptions } = prevProps;
+        const { songs } = this.props;
+        const { songs: prevSongs } = prevProps;
 
-        if (!isEqual(options, prevOptions)) {
+        if (!isEqual(songs, prevSongs)) {
             this.setState({
                 selectedValue: "",
                 showOptions: false,
@@ -83,10 +83,8 @@ class SongSearch extends React.Component {
 
     render() {
         const {
-            children,
-            width,
             height,
-            options,
+            songs,
             className,
         } = this.props;
 
@@ -99,7 +97,7 @@ class SongSearch extends React.Component {
         const optionsRender = [];
         if (showOptions && options) {
 
-            Object.entries(options).forEach(([songPath, song], index) => {
+            Object.entries(songs).forEach(([songPath, song], index) => {
                 if (
                     (song.name && song.name.toLowerCase().includes(searchText))
                     || (song.album && song.album.toLowerCase().includes(searchText))
@@ -135,7 +133,12 @@ class SongSearch extends React.Component {
                 className={"dropdown-container"}
                 style={{  height: `${height}px` }}
             >
-                <SearchInput ref={this.inputRef} hintText="Search songs" onChange={this.handleSearch} onClick={this.showSearchOptions}/>
+                <SearchInput
+                    ref={this.inputRef}
+                    hintText="Search songs"
+                    onChange={this.handleSearch}
+                    onClick={this.showSearchOptions}
+                />
                 { optionsRender.length ? contentRender : "" }
             </div>
         );
@@ -143,16 +146,13 @@ class SongSearch extends React.Component {
 }
 
 SongSearch.propTypes = {
-    options: PropTypes.array.isRequired,
-    children: PropTypes.object,
+    songs: PropTypes.array.isRequired,
     height: PropTypes.number,
-    noSelect: PropTypes.bool,
     onSearch: PropTypes.func,
 };
 
 SongSearch.defaultProps = {
     height: 35,
-    noSelect: false,
     onSearch: () => {},
 };
 

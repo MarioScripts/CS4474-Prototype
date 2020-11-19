@@ -90,7 +90,11 @@ class Content extends React.Component {
 
                     </div>
                     <div className="bottom-row">
-                        <SongSearch options={songs} onSearch={this.handleSearch} className="song-search-content"/>
+                        <SongSearch
+                            className="song-search-content"
+                            songs={songs}
+                            onSearch={this.handleSearch}
+                        />
                     </div>
                 </div>
                 <div className="song-list-separator"/>

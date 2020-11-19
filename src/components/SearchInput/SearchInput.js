@@ -70,7 +70,12 @@ class SearchInput extends React.Component {
                     ref={this.input}
                 />
                 <div className="search-input-cancel-container">
-                    <FontAwesomeIcon onClick={() => this.handleTextChange()} icon={faTimes} className="search-input-cancel-icon" style={{ display: searchText.length ? "block" : "none" }}/>
+                    <FontAwesomeIcon
+                        className="search-input-cancel-icon"
+                        style={{ display: searchText.length ? "block" : "none" }}
+                        onClick={() => this.handleTextChange()}
+                        icon={faTimes}
+                    />
                 </div>
 
             </div>
