@@ -119,6 +119,7 @@ Content.propTypes = {
     onSongDelete: PropTypes.func,
     onAddSong: PropTypes.func,
     onPlaylistEdit : PropTypes.func,
+    onPlaylistCopy : PropTypes.func,
 };
 
 Content.defaultProps = {
@@ -131,6 +132,7 @@ Content.defaultProps = {
     onSongDelete: () => {},
     onAddSong: () => {},
     onPlaylistEdit: ()=> {},
+    onPlaylistCopy: ()=> {},
 };
 
 export default Content;
