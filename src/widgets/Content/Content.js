@@ -14,6 +14,11 @@ class Content extends React.Component {
         onAddSong(isPlaylist, index);
     };
 
+    handleEditButtonClick = () =>{
+        const {onPlaylistEdit} = this.props;
+        onPlaylistEdit();
+    };
+
     render() {
         const {
             songs,
@@ -29,8 +34,6 @@ class Content extends React.Component {
         const songLength = Object.keys(songs).length;
 
         let addButtonRender;
-        //let copyButtonRender icon={faClone}
-        //let editButtonRender icon={faEdit}
 
         if(isPlaylist) {
             addButtonRender = (
@@ -75,7 +78,7 @@ class Content extends React.Component {
                             </div>
                         </Button>
 
-                        <Button className="inverse-button editplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} width={13}>                                
+                        <Button className="inverse-button editplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} width={13} onClick={this.handleEditButtonClick}>                                
                             <FontAwesomeIcon icon={faEdit}/>
                             <div className="edit-playlist-text">
                                 Edit
@@ -115,6 +118,7 @@ Content.propTypes = {
     onSongEdit: PropTypes.func,
     onSongDelete: PropTypes.func,
     onAddSong: PropTypes.func,
+    onPlaylistEdit : PropTypes.func,
 };
 
 Content.defaultProps = {
@@ -126,6 +130,7 @@ Content.defaultProps = {
     onSongEdit: () => {},
     onSongDelete: () => {},
     onAddSong: () => {},
+    onPlaylistEdit: ()=> {},
 };
 
 export default Content;
