@@ -1,0 +1,18 @@
+@import "colors";
+
+.editplaylist-content-container{
+    position: relative;
+    margin-top: 30px;
+}
+
+.error-already-exists{
+    position: absolute;
+    color: red;
+    font-weight: bolder;
+    top:10px;
+    padding-left: 50px;
+}
+
+#playlistName{
+    border-width: thin;
+}
