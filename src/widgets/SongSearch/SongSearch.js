@@ -95,7 +95,7 @@ class SongSearch extends React.Component {
 
         let contentRender;
         const optionsRender = [];
-        if (showOptions && options) {
+        if (showOptions && songs) {
 
             Object.entries(songs).forEach(([songPath, song], index) => {
                 if (
