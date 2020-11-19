@@ -22,6 +22,14 @@ class SearchInput extends React.Component {
         }
     }
 
+    clearText = () => {
+        this.setState({
+            searchText: "",
+        });
+
+        this.input.current.value = "";
+    };
+
     handleTextChange = (e) => {
         const { onChange } = this.props;
         let text = "";
@@ -43,6 +51,7 @@ class SearchInput extends React.Component {
         const {
             width,
             hintText,
+            onClick,
             className,
         } = this.props;
 
@@ -54,6 +63,7 @@ class SearchInput extends React.Component {
                 <input
                     placeholder={hintText}
                     onKeyUp={this.handleTextChange}
+                    onClick={onClick}
                     className={`search-input`}
                     style={{width: `${width}px`}}
                     type="text"
@@ -74,12 +84,14 @@ SearchInput.propTypes = {
     hintText: PropTypes.string,
     className: PropTypes.string,
     onChange: PropTypes.func,
+    onClick: PropTypes.func,
 };
 
 SearchInput.defaultProps = {
     hintText: "",
     width: 150,
     onChange: () => {},
+    onClick: () => {},
 };
 
 export default SearchInput;

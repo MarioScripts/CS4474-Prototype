@@ -7,6 +7,11 @@
   flex-grow: 1;
 }
 
+.bottom-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .content-info-container {
   display: flex;
   flex-direction: column;
@@ -34,8 +39,6 @@
   margin-right: -10px;
   width: 58px;
 }
-
-
 
 .playall-icon path {
   fill: white;
@@ -67,8 +70,18 @@
 }
 
 .song-list-separator {
-  margin: 0 30px -30px 30px;
+  margin: 30px 30px -30px 30px;
   height: 1px;
   background: $blue;
   z-index: 10;
+}
+
+.search-result {
+  color: $blue;
+  background-color: $hover-blue;
+}
+
+.song-search-content {
+  max-height: 30vh;
+  overflow: auto;
 }

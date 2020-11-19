@@ -15,11 +15,17 @@
   width: 100%;
 
 }
-.add-songs-list-container > #songs-table th {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  height: 15px;
 
+.add-songs-list-container > #songs-table th {
+  height: 15px;
+}
+
+.add-songs-list-container > #songs-table th:first-child {
+  border-top-left-radius: 3px;
+}
+
+.add-songs-list-container > #songs-table th:last-child {
+  border-top-right-radius: 3px;
 }
 
 .add-songs-container {
@@ -32,7 +38,7 @@
 
 .add-songs-list-border-container {
   display: flex;
-  width: 98%;
+  width: 100%;
   border-radius: 5px;
   border: 1px solid gray;
 }
