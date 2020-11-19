@@ -23,7 +23,7 @@
 }
 
 .add-songs-container {
-  margin-top: 80px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,4 +41,8 @@
   font-size: 20px;
   padding: 10px 0;
   color: $blue;
+}
+
+.add-song-search {
+  margin-top: 30px;
 }
