@@ -2,7 +2,7 @@ import React from 'react';
 import './MediaControls.scss';
 import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player/lazy';
-import {formatTime, PAUSED, PLAYING} from "../../utils/songUtils";
+import {formatTime, PAUSED, PLAYING, STOPPED} from "../../utils/songUtils";
 import {pauseSvg, playSvg, prevButton, skipButton, volumeMuteSvg, volumeSvg} from "../../utils/iconUtils";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faRandom } from "@fortawesome/free-solid-svg-icons";
@@ -32,6 +32,7 @@ class MediaControls extends React.Component {
 
     handleSongProgress = (progress) => {
         const { seekingInProgress } = this.state;
+
         if(!seekingInProgress) {
             this.setState({
                 songProgress: progress.playedSeconds,
@@ -126,11 +127,11 @@ class MediaControls extends React.Component {
         this.setState({
             shuffleList : list,
         });
-    }
+    };
 
     getRandomIndex = (max) => {
         return Math.floor(Math.random() * max);
-    }
+    };
 
     handleSkips = (next) => {
         const { songs, onIndexChange, onSongStateChange, songIndex } = this.props;
@@ -340,18 +341,21 @@ class MediaControls extends React.Component {
                     </div>
                 </div>
 
-                <ReactPlayer
-                    ref={this.ref}
-                    onProgress={this.handleSongProgress}
-                    onDuration={this.handleSongDuration}
-                    onEnded={this.handleSongEnd}
-                    className="player-container"
-                    playing={songState && !seekingInProgress}
-                    progressInterval={100}
-                    volume={songVolume / 100}
-                    muted={songMuted}
-                    url={Object.keys(songs)[songIndex]}
-                />
+                { songState !== STOPPED &&
+                    <ReactPlayer
+                        ref={this.ref}
+                        onProgress={this.handleSongProgress}
+                        onDuration={this.handleSongDuration}
+                        onEnded={this.handleSongEnd}
+                        className="player-container"
+                        playing={songState === PLAYING && !seekingInProgress}
+                        progressInterval={100}
+                        volume={songVolume / 100}
+                        muted={songMuted}
+                        url={Object.keys(songs)[songIndex]}
+                    />
+                }
+
             </div>
         );
     }

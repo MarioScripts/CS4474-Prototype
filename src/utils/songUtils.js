@@ -1,9 +1,36 @@
 const fs = window.require("fs");
 const mm = window.require("music-metadata");
+const ffmetadata = window.require("ffmetadata");
 
 const extensionRegex = /\.[a-z0-9]+/g;
 const songNameRegex = "(?<=\\\\)[A-Za-z0-9_!@#$%^&*()+=~`:;\'\"\?\<\>\\- ]*(?=\\$1)";
 const supportedSongExtensions = new Set([".mp4", ".mp3", ".m4a", ".flac", ".wav", ".wma", ".aac"]);
+
+export const writeSongMetadata = async (songPath, data) => {
+    let err = false;
+    let tryCount = 0;
+    do {
+        err = await write(songPath, data);
+
+        if(err) {
+            tryCount++;
+            await timeout(1000);
+        }
+    } while (err && tryCount < 5);
+};
+
+const write = (songPath, data) => {
+    return new Promise((resolve) => {
+        ffmetadata.write(songPath, data, [], (err) => {
+            if (err) console.log(err);
+            resolve(!!err);
+        });
+    });
+};
+
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export const expandSongs = async (songList) => {
     const dict = {};
@@ -38,6 +65,7 @@ const expandSongsRec = async (songList) => {
                         album: metadata.common.album,
                         genre: metadata.common.genre ? metadata.common.genre[0] : "",
                         artist: metadata.common.albumartist,
+                        path: song,
                         duration: formatTime(metadata.format.duration),
                     };
                 }
@@ -63,5 +91,6 @@ export const formatTime = (time) => {
     return `${minutes}:${seconds >= 0 && seconds <= 9 ? "0" : ""}${seconds}`
 };
 
-export const PLAYING = true;
-export const PAUSED = false;
+export const PLAYING = 1;
+export const PAUSED = 0;
+export const STOPPED = 2;
