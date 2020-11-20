@@ -20,6 +20,10 @@
   height: 50%;
 }
 
+.top-row{
+  position: relative;
+}
+
 .song-number {
   width: 150px;
   font-size: 35px;
@@ -71,4 +75,25 @@
   height: 1px;
   background: $blue;
   z-index: 10;
+}
+.editplaylist-button{
+  margin-right: 15px;
+  position: absolute;
+  right: 0px;
+  bottom: 2px;
+}
+
+.copyplaylist-button{
+  margin-right: 100px;
+  position: absolute;
+  right: 0px;
+  bottom: 2px;
+}
+
+.copy-playlist-text{
+  padding-left: 6px;
+}
+
+.edit-playlist-text{
+  padding-left: 4px;
 }

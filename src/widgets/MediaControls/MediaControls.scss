@@ -189,6 +189,11 @@
 
 .shuffle-button-icon{
   font-size: 18px;
+  cursor: pointer;
   padding: 5px;
   border-radius: 20%;
+}
+
+.shuffle-button-icon:hover {
+  border: thin solid $blue
 }

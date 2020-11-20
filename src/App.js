@@ -9,6 +9,7 @@ const dialog = window.require("electron").remote.dialog;
 import {expandSongs, PAUSED, PLAYING} from "./utils/songUtils";
 import Content from "./widgets/Content/Content";
 import AddPlaylistSong from "./widgets/modals/AddPlaylistSong/AddPlaylistSong";
+import EditPlaylist from "./widgets/modals/EditPlaylist/EditPlaylist";
 
 
 class App extends React.Component {
@@ -28,6 +29,7 @@ class App extends React.Component {
             firstTimeSetup: false,
 
             showAddPlaylistSong: false,
+            showEditPlaylist: false,
         }
     }
 
@@ -160,9 +162,37 @@ class App extends React.Component {
         }
     };
 
+    handleShowEditPlaylistModal = ()=>{
+        this.setState({
+            showEditPlaylist: true,
+        });
+    };
+
+    handleCloseEditPlaylistModal = () =>{
+        this.setState({
+            showEditPlaylist: false,
+        });
+    };
+
     handleCloseAddPlaylistSongModal = () => {
         this.setState({
             showAddPlaylistSong: false,
+        });
+    };
+
+    handleSetPlaylistName = (newName) => {
+        const { viewableKey } = this.state;
+        const playlists = settings.getSync("playlists");
+        const playlistSongs = playlists[viewableKey];
+
+        playlists[newName] = playlistSongs;
+        delete playlists[viewableKey];
+        settings.setSync("playlists", playlists);
+
+        this.setState({
+            playlists : playlists,
+            viewableKey : newName,
+            showEditPlaylist: false,
         });
     };
 
@@ -182,7 +212,7 @@ class App extends React.Component {
     };
 
     render() {
-        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState, librarySongList, playlists, showAddPlaylistSong } = this.state;
+        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState, librarySongList, playlists, showAddPlaylistSong, showEditPlaylist } = this.state;
 
         return (
             <div className="container">
@@ -201,6 +231,14 @@ class App extends React.Component {
                     isShowing={showAddPlaylistSong}
                     onClose={this.handleCloseAddPlaylistSongModal}
                     onAddSongs={this.handleAddPlaylistSongs}
+                />
+
+                <EditPlaylist
+                    isShowing={showEditPlaylist}
+                    activePlaylist={isPlaylist ? viewableKey : ''}
+                    playlists={playlists}
+                    onClose={this.handleCloseEditPlaylistModal}
+                    onSetPlaylistEdit={this.handleSetPlaylistName}
                 />
 
                 <Modal
@@ -228,6 +266,7 @@ class App extends React.Component {
                     onSongEdit={this.handleSongEdit}
                     onSongDelete={this.handleSongDelete}
                     onAddSong={this.handleShowAddSongModal}
+                    onPlaylistEdit={this.handleShowEditPlaylistModal}
                 />
 
                 <div className="controls">
