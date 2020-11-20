@@ -10,26 +10,22 @@ class EditPlaylist extends React.Component {
         super(props);
 
         this.state = {
-            prevPlaylist : '',
-            newPlaylistName : '',
+            newPlaylistName : this.props.activePlaylist,
         };
 
     }
 
     handleClose = (primaryClicked) => {
-        const { onClose, onSetPlaylistEdit, activePlaylist}= this.props;
+        const { onClose, onSetPlaylistEdit}= this.props;
         const {newPlaylistName} = this.state;
 
-        if(primaryClicked) {
-            this.setState({
-                prevPlaylist : newPlaylistName
-            });
+        this.setState({
+            newPlaylistName : '',
+        });
 
+        if(primaryClicked) {
            onSetPlaylistEdit(newPlaylistName);
         } else {
-            this.setState({
-                prevPlaylist : activePlaylist
-            });
             onClose();
         }
     };
@@ -44,20 +40,12 @@ class EditPlaylist extends React.Component {
     render(){
 
         const { isShowing, activePlaylist, playlists} = this.props;
-        const {newPlaylistName, prevPlaylist} = this.state;
+        const {newPlaylistName} = this.state;
 
         const duplicateName = playlists && newPlaylistName in playlists;
 
-        let checkInputDefaultName = newPlaylistName;
-        let sameName;
-        let displayError;
-
-        if (newPlaylistName === prevPlaylist){
-            displayError = false;    
-        }else{
-            sameName = newPlaylistName === activePlaylist;
-            displayError = duplicateName && !sameName;
-        } 
+        const sameName = newPlaylistName === activePlaylist;
+        const displayError = duplicateName && !sameName;
         
 
         return(
@@ -67,7 +55,7 @@ class EditPlaylist extends React.Component {
             text={"Finish"} 
             isShowing={isShowing} 
             onClose={this.handleClose}
-            disablePrimary={duplicateName}>
+            disablePrimary={duplicateName || newPlaylistName.length < 1}>
                 <div className='editplaylist-content-container'>
                     Name:
                     <div className='editplaylist-content'>
