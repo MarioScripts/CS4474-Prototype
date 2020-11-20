@@ -24,7 +24,8 @@ class TextInput extends React.Component {
     render() {
         const {
             width,
-            showError
+            showError,
+            defValue,
         } = this.props;
 
         return (
@@ -34,6 +35,7 @@ class TextInput extends React.Component {
                 style={{width: `${width}px`}}
                 type="text"
                 ref={this.input}
+                defaultValue={defValue}
             />
         );
     }

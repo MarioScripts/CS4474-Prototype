@@ -5,7 +5,7 @@ import Button from "../../components/Button/Button";
 import {playSvg} from "../../utils/iconUtils";
 import SongList from "../../components/SongList/SongList";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { faMusic } from "@fortawesome/free-solid-svg-icons";
+import { faMusic, faClone, faEdit } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import SearchInput from "../../components/SearchInput/SearchInput";
 import SongSearch from "../SongSearch/SongSearch";
@@ -34,6 +34,11 @@ class Content extends React.Component {
             }, 300);
 
         }, 300);
+    };
+
+    handleEditButtonClick = () =>{
+        const {onPlaylistEdit} = this.props;
+        onPlaylistEdit();
     };
 
     render() {
@@ -88,7 +93,21 @@ class Content extends React.Component {
 
                         {addButtonRender}
 
+                        <Button className="inverse-button copyplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} width={13}>
+                            <FontAwesomeIcon icon={faClone}/>
+                            <div className="copy-playlist-text">
+                                Copy
+                            </div>
+                        </Button>
+
+                        <Button className="inverse-button editplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} width={13} onClick={this.handleEditButtonClick}>
+                            <FontAwesomeIcon icon={faEdit}/>
+                            <div className="edit-playlist-text">
+                                Edit
+                            </div>
+                        </Button>
                     </div>
+
                     <div className="bottom-row">
                         <SongSearch
                             className="song-search-content"
@@ -123,6 +142,8 @@ Content.propTypes = {
     onSongEdit: PropTypes.func,
     onSongDelete: PropTypes.func,
     onAddSong: PropTypes.func,
+    onPlaylistEdit : PropTypes.func,
+    onPlaylistCopy : PropTypes.func,
 };
 
 Content.defaultProps = {
@@ -134,6 +155,8 @@ Content.defaultProps = {
     onSongEdit: () => {},
     onSongDelete: () => {},
     onAddSong: () => {},
+    onPlaylistEdit: ()=> {},
+    onPlaylistCopy: ()=> {},
 };
 
 export default Content;
