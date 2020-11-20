@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Modal from "../../../components/Modal/Modal";
+import TextInput from "../../../components/TextInput/TextInput";
 import "./EditPlaylist.scss";
 
 
@@ -9,70 +10,55 @@ class EditPlaylist extends React.Component {
         super(props);
 
         this.state = {
-            validName: true,
+            prevPlaylist : '',
             newPlaylistName : '',
-            inputValue : this.props.activePlaylist,
         };
 
     }
 
     handleClose = (primaryClicked) => {
-        const { onClose, onSetPlaylistEdit} = this.props;
+        const { onClose, onSetPlaylistEdit, activePlaylist}= this.props;
         const {newPlaylistName} = this.state;
 
         if(primaryClicked) {
+            this.setState({
+                prevPlaylist : newPlaylistName
+            });
+
            onSetPlaylistEdit(newPlaylistName);
         } else {
+            this.setState({
+                prevPlaylist : activePlaylist
+            });
             onClose();
         }
     };
 
-    handleInputChange = (e) => {
+    handleNameChange = (name) => {
         this.setState({
-            inputValue : e.target.value,
+            newPlaylistName : name,
         });
 
     };
 
-
-    handleNameChange = () => {
-        
-        const {playlists, activePlaylist} = this.props;
-        const {inputValue} = this.state;
-
-        const playlistNames = Object.keys(playlists);
-
-        const nameTaken = playlistNames.includes(inputValue);
-
-        if (inputValue != activePlaylist){
-            if (inputValue.length == 0){
-                this.setState({
-                    newPlaylistName: '',
-                });
-            }else if(nameTaken){
-                this.setState({
-                    validName: false,
-                });
-            }else{
-                this.setState({
-                    validName: true,
-                    newPlaylistName: inputValue,
-                });
-            }
-        }else{
-            this.setState({
-                validName: true,
-                newPlaylistName: '',
-            });
-        }
-
-    };
-
-
     render(){
 
-        const { isShowing, activePlaylist} = this.props;
-        const {validName, newPlaylistName} = this.state;
+        const { isShowing, activePlaylist, playlists} = this.props;
+        const {newPlaylistName, prevPlaylist} = this.state;
+
+        const duplicateName = playlists && newPlaylistName in playlists;
+
+        let checkInputDefaultName = newPlaylistName;
+        let sameName;
+        let displayError;
+
+        if (newPlaylistName === prevPlaylist){
+            displayError = false;    
+        }else{
+            sameName = newPlaylistName === activePlaylist;
+            displayError = duplicateName && !sameName;
+        } 
+        
 
         return(
     
@@ -81,15 +67,14 @@ class EditPlaylist extends React.Component {
             text={"Finish"} 
             isShowing={isShowing} 
             onClose={this.handleClose}
-            disablePrimary={!validName || !newPlaylistName.length}>
+            disablePrimary={duplicateName}>
                 <div className='editplaylist-content-container'>
+                    Name:
                     <div className='editplaylist-content'>
-                        <label for='playlistName'> Name: </label>
-                        <input type='text' id='playlistName' name="playlistName"  className="playlist-name-input" style={{borderColor : validName ? 'black' : 'red'}}defaultValue={activePlaylist} onChange={this.handleInputChange} onKeyUp={this.handleNameChange}/>
-                    </div>
-                    <p className="error-already-exists" style={{display : validName ? 'none' : 'flex' }}> Name already exists</p>
+                    <TextInput width={250} autoFocus onChange={this.handleNameChange} showError={displayError} defValue={activePlaylist}/>
+                        { displayError ? "Name already exists" : " " }
+                    </div>                  
                 </div>
-
             </Modal>
         );
     }
