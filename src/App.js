@@ -11,6 +11,7 @@ import Content from "./widgets/Content/Content";
 import AddPlaylistSong from "./widgets/modals/AddPlaylistSong/AddPlaylistSong";
 import EditSong from "./widgets/modals/EditSong/EditSong";
 import EditPlaylist from "./widgets/modals/EditPlaylist/EditPlaylist";
+import CopyPlaylist from "./widgets/modals/CopyPlaylist/CopyPlaylist";
 
 
 class App extends React.Component {
@@ -34,6 +35,7 @@ class App extends React.Component {
             showAddPlaylistSong: false,
             showEditSong: false,
             showEditPlaylist: false,
+            showCopyPlaylist: false,
         }
     }
 
@@ -187,6 +189,7 @@ class App extends React.Component {
         this.setState({
             playlists: currentPlaylists,
             viewableKey: name,
+            isPlaylist: true,
             viewableSongList: await this.createSongList(songList),
         });
     };
@@ -211,6 +214,18 @@ class App extends React.Component {
     handleCloseEditPlaylistModal = () =>{
         this.setState({
             showEditPlaylist: false,
+        });
+    };
+
+    handleShowCopyPlaylistModal = ()=>{
+        this.setState({
+            showCopyPlaylist: true,
+        });
+    };
+
+    handleCloseCopyPlaylistModal = () =>{
+        this.setState({
+            showCopyPlaylist: false,
         });
     };
 
@@ -251,8 +266,63 @@ class App extends React.Component {
         });
     };
 
+    handleCopyPlaylist = (newName) => {
+        const { viewableKey } = this.state;
+        const playlists = settings.getSync("playlists");
+        const playlistSongs = playlists[viewableKey];
+
+        playlists[newName] = playlistSongs;
+        settings.setSync("playlists", playlists);
+
+        this.setState({
+            playlists : playlists,
+            viewableKey : newName,
+            showCopyPlaylist: false,
+        });
+    };
+
+    generateCopyPlaylistDefaultValue = () =>{
+
+        const {isPlaylist, playlists,viewableKey} = this.state;
+
+        const fixedKey = viewableKey.replaceAll("\(", "\\(").replaceAll("\)", "\\)");
+        const regexp = new RegExp(`^${fixedKey}$|^${fixedKey}\\(\\d+\\)$`);
+
+        let numCopies = 0;
+
+        if (isPlaylist && playlists){
+
+            const playListNames = Object.keys(playlists);
+
+            var copies = playListNames.filter((val) => {
+                return regexp.test(val);
+            });
+
+           numCopies = copies.length;
+        }
+        return numCopies === 0 ? viewableKey:  viewableKey + "(" + String(numCopies) + ")";
+
+    };
+
     render() {
-        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState, librarySongList, playlists, showAddPlaylistSong, editedSong, showEditSongModal, editSongLoading, showEditPlaylist } = this.state;
+        const {
+            viewableSongList,
+            firstTimeSetup,
+            activeSongList,
+            isPlaylist,
+            activeSongIndex,
+            activeKey,
+            viewableKey,
+            songState,
+            librarySongList,
+            playlists,
+            showAddPlaylistSong,
+            editedSong,
+            showEditSongModal,
+            editSongLoading,
+            showEditPlaylist,
+            showCopyPlaylist
+        } = this.state;
 
         return (
             <div className="container">
@@ -289,6 +359,15 @@ class App extends React.Component {
                     onSetPlaylistEdit={this.handleSetPlaylistName}
                 />
 
+                <CopyPlaylist
+                    isShowing={showCopyPlaylist}
+                    activePlaylist={isPlaylist ? viewableKey : ''}
+                    playlists={playlists}
+                    onClose={this.handleCloseCopyPlaylistModal}
+                    onSetPlaylistCopy={this.handleCopyPlaylist}
+                    defValue={isPlaylist ? this.generateCopyPlaylistDefaultValue() : ''}
+                />
+
                 <Modal
                     width={700}
                     height={300}
@@ -315,6 +394,7 @@ class App extends React.Component {
                     onSongDelete={this.handleSongDelete}
                     onAddSong={this.handleShowAddSongModal}
                     onPlaylistEdit={this.handleShowEditPlaylistModal}
+                    onPlaylistCopy={this.handleShowCopyPlaylistModal}
                 />
 
                 <div className="controls">
