@@ -51,6 +51,10 @@ const expandSongsRec = async (songList) => {
     return expanded;
 };
 
+export const includesIgnoreCase = (text, searchText)  => {
+    return text.toLowerCase().includes(searchText.toLowerCase())
+};
+
 export const formatTime = (time) => {
     const seconds = Math.trunc(time % 60);
     const minutes = Math.trunc(time / 60);
