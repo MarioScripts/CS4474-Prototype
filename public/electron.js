@@ -29,7 +29,7 @@ function createWindow () {
             nodeIntegration: true,
             enableRemoteModule: true,
             webSecurity: false,
-            devTools: true,
+            devTools: isDev,
         }
     });
 
@@ -38,9 +38,9 @@ function createWindow () {
     );
 
     // Disable menu. We might want to re-enable it at some point
-    // if (!isDev) {
-    //     win.setMenu(null);
-    // }
+    if (!isDev) {
+        win.setMenu(null);
+    }
     // win.webContents.openDevTools()
 }
 
@@ -48,9 +48,9 @@ app.whenReady().then(createWindow);
 
 app.whenReady().then(() => {
     // Disable some shortcuts if we're not in dev
-    // if (!isDev) {
-    //     globalShortcut.register('CommandOrControl+R', () => {})
-    // }
+    if (!isDev) {
+        globalShortcut.register('CommandOrControl+R', () => {})
+    }
     protocol.registerFileProtocol('file', (request, callback) => {
         const pathname = decodeURI(request.url.replace('file:///', ''));
         callback(pathname);

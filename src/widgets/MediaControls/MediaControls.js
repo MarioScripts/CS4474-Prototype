@@ -227,7 +227,7 @@ class MediaControls extends React.Component {
 
             shuffleButtonRender =(
                 <div className="shuffle-button-container ">
-                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={shuffleButtonStyle}></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={shuffleButtonStyle}/>
                 </div>
             );
         }else{
@@ -237,7 +237,7 @@ class MediaControls extends React.Component {
 
             shuffleButtonRender =(
                 <div className="shuffle-button-container ">
-                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={shuffleButtonStyle}></FontAwesomeIcon>
+                        <FontAwesomeIcon icon={faRandom} onClick={this.handleShuffleState} className="shuffle-button-icon" style={shuffleButtonStyle}/>
                 </div>
             );
 
@@ -293,7 +293,7 @@ class MediaControls extends React.Component {
                 </div>
 
                 <div className="media-controls-container">
-                    {shuffleButtonRender}
+
                     <div className="media-buttons-container">
                         <div className="skip-button media-icon">
                             { skipButton(() => this.handleSkips(false))}
@@ -305,6 +305,7 @@ class MediaControls extends React.Component {
                             { prevButton(() => this.handleSkips(true)) }
                         </div>
                     </div>
+                    { shuffleButtonRender }
 
                     <div className="slide-container">
                         {formatTime(songProgress)}
@@ -321,6 +322,8 @@ class MediaControls extends React.Component {
                         />
                         {formatTime(songDuration)}
                     </div>
+
+
                 </div>
 
                 <div className="volume-container">

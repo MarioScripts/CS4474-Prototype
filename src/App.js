@@ -10,6 +10,8 @@ import {expandSongs, PAUSED, PLAYING, STOPPED, writeSongMetadata} from "./utils/
 import Content from "./widgets/Content/Content";
 import AddPlaylistSong from "./widgets/modals/AddPlaylistSong/AddPlaylistSong";
 import EditSong from "./widgets/modals/EditSong/EditSong";
+import EditPlaylist from "./widgets/modals/EditPlaylist/EditPlaylist";
+
 
 class App extends React.Component {
     constructor(props) {
@@ -31,6 +33,7 @@ class App extends React.Component {
             editSongLoading: false,
             showAddPlaylistSong: false,
             showEditSong: false,
+            showEditPlaylist: false,
         }
     }
 
@@ -199,9 +202,37 @@ class App extends React.Component {
         }
     };
 
+    handleShowEditPlaylistModal = ()=>{
+        this.setState({
+            showEditPlaylist: true,
+        });
+    };
+
+    handleCloseEditPlaylistModal = () =>{
+        this.setState({
+            showEditPlaylist: false,
+        });
+    };
+
     handleCloseAddPlaylistSongModal = () => {
         this.setState({
             showAddPlaylistSong: false,
+        });
+    };
+
+    handleSetPlaylistName = (newName) => {
+        const { viewableKey } = this.state;
+        const playlists = settings.getSync("playlists");
+        const playlistSongs = playlists[viewableKey];
+
+        playlists[newName] = playlistSongs;
+        delete playlists[viewableKey];
+        settings.setSync("playlists", playlists);
+
+        this.setState({
+            playlists : playlists,
+            viewableKey : newName,
+            showEditPlaylist: false,
         });
     };
 
@@ -221,7 +252,7 @@ class App extends React.Component {
     };
 
     render() {
-        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState, librarySongList, playlists, showAddPlaylistSong, editedSong, showEditSongModal, editSongLoading } = this.state;
+        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState, librarySongList, playlists, showAddPlaylistSong, editedSong, showEditSongModal, editSongLoading, showEditPlaylist } = this.state;
 
         return (
             <div className="container">
@@ -250,6 +281,14 @@ class App extends React.Component {
                     isLoading={editSongLoading}
                 />
 
+                <EditPlaylist
+                    isShowing={showEditPlaylist}
+                    activePlaylist={isPlaylist ? viewableKey : ''}
+                    playlists={playlists}
+                    onClose={this.handleCloseEditPlaylistModal}
+                    onSetPlaylistEdit={this.handleSetPlaylistName}
+                />
+
                 <Modal
                     width={700}
                     height={300}
@@ -275,6 +314,7 @@ class App extends React.Component {
                     onSongEdit={this.handleSongEdit}
                     onSongDelete={this.handleSongDelete}
                     onAddSong={this.handleShowAddSongModal}
+                    onPlaylistEdit={this.handleShowEditPlaylistModal}
                 />
 
                 <div className="controls">

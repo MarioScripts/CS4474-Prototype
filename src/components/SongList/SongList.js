@@ -12,23 +12,27 @@ class SongList extends React.Component {
         };
     }
 
-    handleSelection = (songPath) => {
+    handleSelection = (e, songPath) => {
         const { selected } = this.state;
         const { onSelectedChange } = this.props;
-        const isUnselected = selected.has(songPath);
 
-        if (isUnselected) {
-            selected.delete(songPath)
-        } else {
-            selected.add(songPath);
-        }
+        // Only detect as selection if the row is clicked, not the play/edit/delete action
+        if(e.target.localName === "td" || e.target.localName === "tr") {
+            const isUnselected = selected.has(songPath);
 
-        this.setState({
-            selected,
-        });
+            if (isUnselected) {
+                selected.delete(songPath)
+            } else {
+                selected.add(songPath);
+            }
 
-        if(onSelectedChange) {
-            onSelectedChange([...selected]);
+            this.setState({
+                selected,
+            });
+
+            if(onSelectedChange) {
+                onSelectedChange([...selected]);
+            }
         }
     };
 
@@ -78,8 +82,9 @@ class SongList extends React.Component {
             songRows.push(
                 <tr
                     className={(isActive ? "song-active-row" : "") + (isSelected ? ` ${selectedRowCss}` : "")}
-                    onClick={() => this.handleSelection(songPath)}
+                    onClick={(e) => this.handleSelection(e, songPath)}
                     onDoubleClick={playPauseOnClick}
+                    id={songPath}
                 >
                     <td>{ song.name }</td>
                     <td>{ song.artist || "--" }</td>
