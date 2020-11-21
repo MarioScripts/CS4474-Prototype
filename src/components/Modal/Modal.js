@@ -2,6 +2,7 @@ import React from 'react';
 import './Modal.scss';
 import PropTypes from 'prop-types';
 import Button from "../Button/Button";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 class Modal extends React.Component {
 
@@ -20,10 +21,17 @@ class Modal extends React.Component {
             cancelText,
             text,
             isShowing,
-            disablePrimary
+            disablePrimary,
+            isLoading,
         } = this.props;
 
         if (!isShowing) return null;
+
+        let loadingRender;
+
+        if (isLoading) {
+            loadingRender = <LoadingSpinner size="5" width="1" className="edit-song-loading"/>;
+        }
 
         return (
             <div id="modal-background">
@@ -35,8 +43,12 @@ class Modal extends React.Component {
                     {children}
 
                     <div className="modal-buttons-container">
-                        <Button className="inverse-button" onClick={() => this.handleClick(false)}>{cancelText}</Button>
-                        <Button className="filled-button" onClick={() => this.handleClick(true)} disabled={disablePrimary}>{text}</Button>
+                        <Button className="inverse-button" onClick={() => this.handleClick(false)} disabled={isLoading}>{cancelText}</Button>
+
+                        <div className="primary-load-container">
+                            { loadingRender }
+                            <Button className="filled-button" onClick={() => this.handleClick(true)} disabled={disablePrimary || isLoading}>{text}</Button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,6 +66,7 @@ Modal.propTypes = {
     isShowing: PropTypes.bool,
     disablePrimary: PropTypes.bool,
     onClose: PropTypes.func,
+    isLoading: PropTypes.bool,
 };
 
 Modal.defaultProps = {
@@ -61,6 +74,7 @@ Modal.defaultProps = {
     text: "Continue",
     disablePrimary: false,
     isShowing: false,
+    isLoading: true,
 };
 
 export default Modal;

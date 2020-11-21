@@ -45,6 +45,7 @@
 
 .disabled-button:hover {
     border-color: $disabled-background;
+    font-weight: 400;
 }
 
 .add-song-no-songs-error {

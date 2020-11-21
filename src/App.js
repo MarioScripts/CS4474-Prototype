@@ -28,6 +28,7 @@ class App extends React.Component {
             firstTimeSetup: false,
 
             editedSong: null,
+            editSongLoading: false,
             showAddPlaylistSong: false,
             showEditSong: false,
         }
@@ -132,6 +133,8 @@ class App extends React.Component {
 
     handleSongEdit = (index) => {
         const { viewableSongList, activeSongIndex, songState } = this.state;
+        this.player.current.resetSong();
+
         this.setState({
             editedSong: Object.values(viewableSongList)[index],
             showEditSong: true,
@@ -139,17 +142,24 @@ class App extends React.Component {
             songState: index === activeSongIndex ? STOPPED : songState,
 
         });
-        // TODO: Edit song details
     };
 
     handleSongEditSave = async (data) => {
         const { editedSong, viewableKey } = this.state;
+
+        // Sometimes, if the user tries to edit a song that was playing, it will take a second
+        // for the file system to allow editing the song. In this case, we will show a loading spinner until a successful write happens
+        // (or until it times out)
+        this.setState({
+            editSongLoading: true,
+        });
 
         await writeSongMetadata(editedSong.path, data);
 
         this.setState({
             editedSong: null,
             showEditSongModal: false,
+            editSongLoading: false,
             viewableSongList: await this.createSongList(settings.getSync(viewableKey)),
         });
     };
@@ -211,7 +221,7 @@ class App extends React.Component {
     };
 
     render() {
-        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState, librarySongList, playlists, showAddPlaylistSong, editedSong, showEditSongModal } = this.state;
+        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState, librarySongList, playlists, showAddPlaylistSong, editedSong, showEditSongModal, editSongLoading } = this.state;
 
         return (
             <div className="container">
@@ -237,6 +247,7 @@ class App extends React.Component {
                     song={editedSong}
                     onClose={this.handleSongEditModalClose}
                     onSave={this.handleSongEditSave}
+                    isLoading={editSongLoading}
                 />
 
                 <Modal

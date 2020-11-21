@@ -47,24 +47,26 @@ class EditSong extends React.Component {
     };
 
     render() {
-        const { song, isShowing } = this.props;
+        const { song, isShowing, isLoading } = this.props;
         const { title } = this.state;
 
         return (
             <Modal
-                width={500}
-                height={500}
+                width={400}
+                height={325}
                 title="Edit Song"
                 text="Save"
                 isShowing={isShowing}
                 onClose={this.handleClose}
                 disablePrimary={title.length === 0}
+                isLoading={isLoading}
             >
                 <div className="edit-song-row">
                     <div className="edit-song-label">Title*: </div>
                     <TextInput
                         defaultValue={song && song.name ? song.name : ""}
                         onChange={(text) => this.handleInputChange("title", text)}
+                        showError={title.length === 0}
                     />
                 </div>
 
@@ -91,11 +93,6 @@ class EditSong extends React.Component {
                         onChange={(text) => this.handleInputChange("album", text)}
                     />
                 </div>
-
-                {/*<div className="edit-song-row">*/}
-                {/*    <div className="edit-song-label">Date: </div>*/}
-                {/*    <TextInput defaultValue={song && song.name ? song.name : ""}/>*/}
-                {/*</div>*/}
             </Modal>
         );
     }
@@ -106,12 +103,14 @@ EditSong.propTypes = {
     isShowing: PropTypes.bool,
     onSave: PropTypes.func,
     onClose: PropTypes.func,
+    isLoading: PropTypes.bool,
 };
 
 EditSong.defaultProps = {
     isShowing: false,
     onSave: () => {},
     onClose: () => {},
+    isLoading: false,
 };
 
 export default EditSong;
