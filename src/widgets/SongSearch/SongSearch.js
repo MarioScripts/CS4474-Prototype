@@ -3,6 +3,7 @@ import './SongSearch.scss';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 import SearchInput from "../../components/SearchInput/SearchInput";
+import {includesIgnoreCase} from "../../utils/songUtils";
 
 class SongSearch extends React.Component {
     constructor(props) {
@@ -99,10 +100,10 @@ class SongSearch extends React.Component {
 
             Object.entries(songs).forEach(([songPath, song], index) => {
                 if (
-                    (song.name && song.name.toLowerCase().includes(searchText))
-                    || (song.album && song.album.toLowerCase().includes(searchText))
-                    || (song.genre && song.genre.toLowerCase().includes(searchText))
-                    || (song.artist && song.artist.toLowerCase().includes(searchText))
+                    (song.name && includesIgnoreCase(song.name, searchText))
+                    || (song.album && includesIgnoreCase(song.name, searchText))
+                    || (song.genre && includesIgnoreCase(song.genre, searchText))
+                    || (song.artist && includesIgnoreCase(song.artist, searchText))
                 ) {
                     optionsRender.push(
                         <div
