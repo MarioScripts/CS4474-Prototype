@@ -1,0 +1,25 @@
+@import "colors";
+
+.spinner {
+  border: 0.2rem solid transparent;
+  border-top: 0.2rem solid $blue;
+
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+
+  animation: spin 1s linear infinite;
+
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.5rem;
+}
+/* Safari Support */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

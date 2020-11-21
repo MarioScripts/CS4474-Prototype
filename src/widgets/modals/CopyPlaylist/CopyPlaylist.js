@@ -77,7 +77,7 @@ class CopyPlaylist extends React.Component {
                 <div className='copyplaylist-content-container'>
                     Name:
                     <div className='copyplaylist-content'>
-                    <TextInput width={250} autoFocus onChange={this.handleNameChange} showError={displayError} defValue={defValue}/>
+                    <TextInput width={250} autoFocus onChange={this.handleNameChange} showError={displayError} defaultValue={defValue}/>
                         { displayError ? "Name already exists" : " " }
                     </div>                  
                 </div>

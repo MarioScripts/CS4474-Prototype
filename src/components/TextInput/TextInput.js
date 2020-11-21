@@ -25,28 +25,34 @@ class TextInput extends React.Component {
         const {
             width,
             showError,
-            defValue,
+            defaultValue
         } = this.props;
 
         return (
             <input
+                defaultValue={defaultValue}
                 onKeyUp={this.handleTextChange}
                 className={`text-input${showError ? " error-text-input" : ""}`}
                 style={{width: `${width}px`}}
                 type="text"
                 ref={this.input}
-                defaultValue={defValue}
             />
         );
     }
 }
 
 TextInput.propTypes = {
+    showError: PropTypes.bool,
+    width: PropTypes.number,
+    onChange: PropTypes.func,
+    defaultValue: PropTypes.string,
 
 };
 
 TextInput.defaultProps = {
-
+    showError: false,
+    defaultValue: "",
+    onChange: () => {},
 };
 
 export default TextInput;

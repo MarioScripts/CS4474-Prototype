@@ -5,13 +5,24 @@
   "main": "public/electron.js",
   "description": "Prototype for CS4474",
   "build": {
+    "asar": false,
     "appId": "com.cs4474.prototype",
     "files": [
       "dist/**/*",
       "public/**/**",
       "node_modules/**/*",
+      "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffmpeg-static/index.js",
+      "node_modules/ffmpeg-static/package.json",
       "package.json"
     ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "files": [
+        "!node_modules/ffmpeg-static/bin/win${/*}",
+        "!node_modules/ffmpeg-static/bin/linux${/*}"
+      ]
+    },
     "directories": {
       "buildResources": "resources"
     },
@@ -32,6 +43,8 @@
     "electron-context-menu": "^2.3.0",
     "electron-is-dev": "^1.2.0",
     "electron-settings": "^4.0.2",
+    "ffmetadata": "git+https://github.com/MarioScripts/node-ffmetadata.git",
+    "ffmpeg-static-electron": "^2.0.1",
     "lodash.isequal": "^4.5.0",
     "music-metadata": "^7.5.0",
     "prop-types": "^15.7.2",
