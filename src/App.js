@@ -279,7 +279,7 @@ class App extends React.Component {
             viewableKey : newName,
             showCopyPlaylist: false,
         });
-    };
+    }
 
     generateCopyPlaylistDefaultValue = () =>{
 
@@ -302,7 +302,7 @@ class App extends React.Component {
         }
         return numCopies === 0 ? viewableKey:  viewableKey + "(" + String(numCopies) + ")";
 
-    };
+    }
 
     render() {
         const {
@@ -321,7 +321,7 @@ class App extends React.Component {
             showEditSongModal,
             editSongLoading,
             showEditPlaylist,
-            showCopyPlaylist
+            showCopyPlaylist,
         } = this.state;
 
         return (
