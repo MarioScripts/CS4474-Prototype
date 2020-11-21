@@ -7,6 +7,12 @@
   flex-grow: 1;
 }
 
+.bottom-row {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .content-info-container {
   display: flex;
   flex-direction: column;
@@ -39,8 +45,6 @@
   width: 58px;
 }
 
-
-
 .playall-icon path {
   fill: white;
 }
@@ -71,20 +75,19 @@
 }
 
 .song-list-separator {
-  margin: 0 30px -30px 30px;
+  margin: 30px 30px -30px 30px;
   height: 1px;
   background: $blue;
   z-index: 10;
 }
-.editplaylist-button{
-  margin-right: 15px;
+.editplaylist-button {
   position: absolute;
   right: 0px;
   bottom: 2px;
 }
 
 .copyplaylist-button{
-  margin-right: 100px;
+  margin-right: 90px;
   position: absolute;
   right: 0px;
   bottom: 2px;
@@ -96,4 +99,14 @@
 
 .edit-playlist-text{
   padding-left: 4px;
+}
+
+.search-result {
+  color: $blue;
+  background-color: $hover-blue;
+}
+
+.song-search-content {
+  max-height: 30vh;
+  overflow: auto;
 }

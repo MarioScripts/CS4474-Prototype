@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Modal from "../../../components/Modal/Modal";
 import SongList from "../../../components/SongList/SongList";
 import "./AddPlaylistSong.scss";
+import SearchInput from "../../../components/SearchInput/SearchInput";
 
 class AddPlaylistSong extends React.Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class AddPlaylistSong extends React.Component {
 
         this.state = {
             selectedSongs: [],
+            searchText: "",
         };
     }
 
@@ -20,6 +22,7 @@ class AddPlaylistSong extends React.Component {
         if (isShowing !== prevIsShowing) {
             this.setState({
                 selectedSongs: [],
+                searchText: "",
             });
         }
     }
@@ -41,6 +44,12 @@ class AddPlaylistSong extends React.Component {
         }
     };
 
+    handleSearchTextChange = (text) => {
+        this.setState({
+            searchText: text,
+        });
+    };
+
     render() {
         const {
             isShowing,
@@ -51,12 +60,18 @@ class AddPlaylistSong extends React.Component {
 
         const {
             selectedSongs,
+            searchText,
         } = this.state;
 
         // Calculate songs that aren't already in the playlist
         const filteredSongs = {};
         Object.entries(songs).forEach(([songPath, song]) => {
-            if (!(songPath in playlistSongs)) {
+            if (!(songPath in playlistSongs) && (
+                    (song.name && song.name.toLowerCase().includes(searchText))
+                    || (song.album && song.album.toLowerCase().includes(searchText))
+                    || (song.genre && song.genre.toLowerCase().includes(searchText))
+                    || (song.artist && song.artist.toLowerCase().includes(searchText))
+            )) {
                 filteredSongs[songPath] = song;
             }
         });
@@ -73,6 +88,7 @@ class AddPlaylistSong extends React.Component {
                 disablePrimary={!selectedSongs.length}
                 onClose={this.handleClose}
             >
+                <SearchInput className="add-song-search" hintText="Search songs" onChange={this.handleSearchTextChange}/>
                 <div className="add-songs-container">
                     <div className="add-songs-list-border-container">
                         <SongList
