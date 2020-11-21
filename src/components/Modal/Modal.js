@@ -74,7 +74,7 @@ Modal.defaultProps = {
     text: "Continue",
     disablePrimary: false,
     isShowing: false,
-    isLoading: true,
+    isLoading: false,
 };
 
 export default Modal;
