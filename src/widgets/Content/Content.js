@@ -19,6 +19,11 @@ class Content extends React.Component {
         onPlaylistEdit();
     };
 
+    handleCopyButtonClick = () =>{
+        const {onPlaylistCopy} = this.props;
+        onPlaylistCopy();
+    };
+
     render() {
         const {
             songs,
@@ -71,7 +76,7 @@ class Content extends React.Component {
 
                         {addButtonRender}
                         
-                        <Button className="inverse-button copyplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} width={13}>
+                        <Button className="inverse-button copyplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} width={13} onClick={this.handleCopyButtonClick}>
                             <FontAwesomeIcon icon={faClone}/>
                             <div className="copy-playlist-text">
                                 Copy
