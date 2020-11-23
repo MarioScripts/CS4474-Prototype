@@ -6,9 +6,10 @@ import Modal from "./components/Modal/Modal";
 import MediaControls from "./widgets/MediaControls/MediaControls";
 const settings = window.require("electron-settings");
 const dialog = window.require("electron").remote.dialog;
-import {expandSongs, PAUSED, PLAYING} from "./utils/songUtils";
+import {expandSongs, PAUSED, PLAYING, STOPPED, writeSongMetadata} from "./utils/songUtils";
 import Content from "./widgets/Content/Content";
 import AddPlaylistSong from "./widgets/modals/AddPlaylistSong/AddPlaylistSong";
+import EditSong from "./widgets/modals/EditSong/EditSong";
 import EditPlaylist from "./widgets/modals/EditPlaylist/EditPlaylist";
 import CopyPlaylist from "./widgets/modals/CopyPlaylist/CopyPlaylist";
 
@@ -29,7 +30,10 @@ class App extends React.Component {
             playlists: null,
             firstTimeSetup: false,
 
+            editedSong: null,
+            editSongLoading: false,
             showAddPlaylistSong: false,
+            showEditSong: false,
             showEditPlaylist: false,
             showCopyPlaylist: false,
         }
@@ -133,7 +137,43 @@ class App extends React.Component {
     };
 
     handleSongEdit = (index) => {
-        // TODO: Edit song details
+        const { viewableSongList, activeSongIndex, songState } = this.state;
+        this.player.current.resetSong();
+
+        this.setState({
+            editedSong: Object.values(viewableSongList)[index],
+            showEditSong: true,
+            showEditSongModal: true,
+            songState: index === activeSongIndex ? STOPPED : songState,
+
+        });
+    };
+
+    handleSongEditSave = async (data) => {
+        const { editedSong, viewableKey } = this.state;
+
+        // Sometimes, if the user tries to edit a song that was playing, it will take a second
+        // for the file system to allow editing the song. In this case, we will show a loading spinner until a successful write happens
+        // (or until it times out)
+        this.setState({
+            editSongLoading: true,
+        });
+
+        await writeSongMetadata(editedSong.path, data);
+
+        this.setState({
+            editedSong: null,
+            showEditSongModal: false,
+            editSongLoading: false,
+            viewableSongList: await this.createSongList(settings.getSync(viewableKey)),
+        });
+    };
+
+    handleSongEditModalClose = () => {
+        this.setState({
+            editSong: null,
+            showEditSongModal: false,
+        });
     };
 
     handleSongDelete = (index) => {
@@ -245,14 +285,15 @@ class App extends React.Component {
 
         const {isPlaylist, playlists,viewableKey} = this.state;
 
-        const regexp = new RegExp(`^${viewableKey}$|^${viewableKey}\\(\\d+\\)$`);
-        
+        const fixedKey = viewableKey.replaceAll("\(", "\\(").replaceAll("\)", "\\)");
+        const regexp = new RegExp(`^${fixedKey}$|^${fixedKey}\\(\\d+\\)$`);
+
         let numCopies = 0;
 
         if (isPlaylist && playlists){
-           
+
             const playListNames = Object.keys(playlists);
-            
+
             var copies = playListNames.filter((val) => {
                 return regexp.test(val);
             });
@@ -264,7 +305,24 @@ class App extends React.Component {
     }
 
     render() {
-        const { viewableSongList, firstTimeSetup, activeSongList, isPlaylist, activeSongIndex, activeKey, viewableKey, songState, librarySongList, playlists, showAddPlaylistSong, showEditPlaylist, showCopyPlaylist } = this.state;
+        const {
+            viewableSongList,
+            firstTimeSetup,
+            activeSongList,
+            isPlaylist,
+            activeSongIndex,
+            activeKey,
+            viewableKey,
+            songState,
+            librarySongList,
+            playlists,
+            showAddPlaylistSong,
+            editedSong,
+            showEditSongModal,
+            editSongLoading,
+            showEditPlaylist,
+            showCopyPlaylist,
+        } = this.state;
 
         return (
             <div className="container">
@@ -283,6 +341,14 @@ class App extends React.Component {
                     isShowing={showAddPlaylistSong}
                     onClose={this.handleCloseAddPlaylistSongModal}
                     onAddSongs={this.handleAddPlaylistSongs}
+                />
+
+                <EditSong
+                    isShowing={showEditSongModal}
+                    song={editedSong}
+                    onClose={this.handleSongEditModalClose}
+                    onSave={this.handleSongEditSave}
+                    isLoading={editSongLoading}
                 />
 
                 <EditPlaylist

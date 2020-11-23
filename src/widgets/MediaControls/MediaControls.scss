@@ -7,6 +7,7 @@
 .media-icon {
   display: flex;
   justify-content: center;
+  z-indeX: 10;
 }
 
 .media-icon > svg {
@@ -144,14 +145,15 @@
 .now-playing{
   border-style: solid;
   text-align: center;
+  padding: 5px;
   color: white;
   background-color: $blue;
-  
 }
 
 .song-info-display{
+  display: flex;
+  flex-direction: column;
   padding-top: 3%;
-  height: 70%;
 }
 
 .now-playing-title {
@@ -186,7 +188,6 @@
   
 }
 
-
 .shuffle-button-icon{
   font-size: 18px;
   cursor: pointer;
@@ -196,4 +197,11 @@
 
 .shuffle-button-icon:hover {
   border: thin solid $blue
+}
+
+.shuffle-button-container {
+  margin-top: -47px;
+  z-index: 9;
+  height: 32px;
+  margin-bottom: 15px;
 }

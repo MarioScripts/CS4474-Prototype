@@ -59,7 +59,7 @@ class EditPlaylist extends React.Component {
                 <div className='editplaylist-content-container'>
                     Name:
                     <div className='editplaylist-content'>
-                    <TextInput width={250} autoFocus onChange={this.handleNameChange} showError={displayError} defValue={activePlaylist}/>
+                    <TextInput width={250} autoFocus onChange={this.handleNameChange} showError={displayError} defaultValue={activePlaylist}/>
                         { displayError ? "Name already exists" : " " }
                     </div>                  
                 </div>
