@@ -1,0 +1,82 @@
+@import "colors";
+
+.playlist-dropdown-container {
+    width: fit-content;
+    z-index: 99999;
+}
+
+.playlist-dropdown-main-button{
+    color: $blue;
+    font-size: 30px;
+    cursor: pointer;
+    position: absolute;
+    top:0px;
+    right: 120px;
+    height: 35px;
+}
+
+
+.playlist-dropdown-content-container {
+    flex-direction: column;
+    border: 1px solid $blue;
+    z-index: 9999;
+    background-color: white;
+    height: 70px;
+    overflow: auto;
+    margin-top: 35px;
+}
+
+.playlist-dropdown-content-container > div:not(:first-child) {
+    border-top: 1px solid $blue;
+}
+
+.playlist-dropdown-content {
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+    height: 30px;
+    font-weight: bold;
+    font-size: 13px;
+    background: white;
+    width: 120px;
+    z-index: 9999;
+}
+
+.playlist-dropdown-content:hover {
+    color: black;
+    cursor: pointer;
+}
+
+.playlist-dropdown-content:hover {
+    background-color: $hover-blue;
+    cursor: pointer;
+}
+
+.dropdown-content-active {
+    background-color: $blue !important;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    color: white !important;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    cursor: pointer;
+}
+  
+
+::-webkit-scrollbar-track {
+    background: white; 
+}
+   
+
+::-webkit-scrollbar-thumb {
+    background: $highlight-blue;
+    border-radius: 10px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: $blue;   
+}
+  
+  
