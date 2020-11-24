@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import './ViewPlaylists.scss';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCaretUp} from "@fortawesome/free-solid-svg-icons";
-import isEqual from 'lodash.isequal';
 
 
 class ViewPlaylists extends React.Component{
@@ -48,7 +47,6 @@ class ViewPlaylists extends React.Component{
     render(){
         const {
             playlists,
-            height,
             activePlaylist,
             className,
             isShowing,
@@ -65,7 +63,6 @@ class ViewPlaylists extends React.Component{
                     <div
                         className={`playlist-dropdown-content${isActive ? " dropdown-content-active" : ""}`}
                         onClick={() => this.handleSelectValue(val)}
-                        ref = {isActive ? this.activeRef : null}
                     >
                         {val}
                     </div>
@@ -87,7 +84,6 @@ class ViewPlaylists extends React.Component{
 
             <div
                 className={`playlist-dropdown-container${className ? ` ${className}` : ""}`}
-                style={{  height: `${height}px` }}
             >
                 <div
                 className="playlist-dropdown-main-button"
