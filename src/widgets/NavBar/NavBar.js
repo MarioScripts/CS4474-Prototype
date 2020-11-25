@@ -115,8 +115,9 @@ class NavBar extends React.Component {
                 </MenuItem>
 
                 <div className="navbar-divider"/>
-
-                {playlistRenders}
+                <div  className="playlist-container">
+                    {playlistRenders}
+                </div>
 
                 {viewAllPlaylistButtonRender}
 
