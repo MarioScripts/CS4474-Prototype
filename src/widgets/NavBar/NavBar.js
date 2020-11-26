@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import MenuItem from "../../components/MenuItem/MenuItem";
 import Button from "../../components/Button/Button";
 import CreatePlaylist from "../modals/CreatePlaylist/CreatePlaylist";
+import ViewPlaylists from "../ViewPlaylists/ViewPlaylists";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faCaretDown} from "@fortawesome/free-solid-svg-icons";
 const settings = window.require("electron-settings");
 
 class NavBar extends React.Component {
@@ -12,6 +15,7 @@ class NavBar extends React.Component {
 
         this.state = {
             showNewPlaylistModal: false,
+            showAllPlaylists: false,
         };
     }
 
@@ -27,6 +31,27 @@ class NavBar extends React.Component {
         });
     };
 
+    handleShowAllPlaylistsButtonToggle = () => {
+        const {showAllPlaylists} = this.state;
+        this.setState({
+            showAllPlaylists: !showAllPlaylists
+        });
+    }
+
+    handleOutsideClosePlaylist = () =>{
+        const {showAllPlaylists} = this.state;
+        if (showAllPlaylists === true){
+            this.setState({
+                showAllPlaylists: !showAllPlaylists
+            });
+        }
+    }
+
+    handlePlaylistDropdownSelect = (playlist) => {
+        this.handleShowAllPlaylistsButtonToggle();
+        this.handleActivateItem(playlist);
+    }
+
     handleActivateItem = (playlist) => {
         const  { onChange, playlists, library } = this.props;
 
@@ -39,9 +64,22 @@ class NavBar extends React.Component {
     };
 
     render() {
-        const { showNewPlaylistModal } = this.state;
+        const { showNewPlaylistModal, showAllPlaylists } = this.state;
         const { playlists, songs, onCreatePlaylist, activePlaylist } = this.props;
 
+        const showButton = playlists ? true : false;
+
+        const viewAllPlaylistButtonRender = (
+            <div
+                className="playlist-dropdown-main-button-navbar"
+                onClick={this.handleShowAllPlaylistsButtonToggle}
+                style={{display: showButton && !showAllPlaylists ? 'flex' : 'none'}}
+            >
+                <FontAwesomeIcon icon={faCaretDown}/>
+            </div>
+        )
+        
+        
         const playlistRenders = [];
 
         if (playlists) {
@@ -77,8 +115,20 @@ class NavBar extends React.Component {
                 </MenuItem>
 
                 <div className="navbar-divider"/>
+                <div  className="playlist-container">
+                    {playlistRenders}
+                </div>
 
-                {playlistRenders}
+                {viewAllPlaylistButtonRender}
+
+                <ViewPlaylists 
+                    className="navbar-view-playlists"
+                    isShowing={showAllPlaylists}
+                    playlists={playlists}
+                    activePlaylist={activePlaylist}
+                    onSelect={this.handlePlaylistDropdownSelect}
+                    onClose={this.handleOutsideClosePlaylist}
+                />
 
                 <Button
                     className="filled-button navbar-new-playlist"

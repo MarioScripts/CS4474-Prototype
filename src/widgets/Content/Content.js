@@ -99,8 +99,6 @@ class Content extends React.Component {
                         {addButtonRender}
                         
                         <Button className="inverse-button copyplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} width={13} onClick={this.handleCopyButtonClick}>
-
-      
                             <FontAwesomeIcon icon={faClone}/>
                             <div className="copy-playlist-text">
                                 Copy
