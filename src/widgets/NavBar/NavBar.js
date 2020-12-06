@@ -3,81 +3,139 @@ import './NavBar.scss';
 import PropTypes from 'prop-types';
 import MenuItem from "../../components/MenuItem/MenuItem";
 import Button from "../../components/Button/Button";
-import Modal from "../../components/Modal/Modal";
+import CreatePlaylist from "../modals/CreatePlaylist/CreatePlaylist";
+import ViewPlaylists from "../ViewPlaylists/ViewPlaylists";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faCaretDown} from "@fortawesome/free-solid-svg-icons";
+const settings = window.require("electron-settings");
 
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            activePlaylist: "Library",
             showNewPlaylistModal: false,
+            showAllPlaylists: false,
         };
     }
 
-    handleToggleModal = (state) => {
+    handleClosePlaylistModal = () => {
         this.setState({
-            showNewPlaylistModal: state
+            showNewPlaylistModal: false
         });
     };
+
+    handleOpenPlaylistModal = () => {
+        this.setState({
+            showNewPlaylistModal: true
+        });
+    };
+
+    handleShowAllPlaylistsButtonToggle = () => {
+        const {showAllPlaylists} = this.state;
+        this.setState({
+            showAllPlaylists: !showAllPlaylists
+        });
+    }
+
+    handleOutsideClosePlaylist = () =>{
+        const {showAllPlaylists} = this.state;
+        if (showAllPlaylists === true){
+            this.setState({
+                showAllPlaylists: !showAllPlaylists
+            });
+        }
+    }
+
+    handlePlaylistDropdownSelect = (playlist) => {
+        this.handleShowAllPlaylistsButtonToggle();
+        this.handleActivateItem(playlist);
+    }
 
     handleActivateItem = (playlist) => {
         const  { onChange, playlists, library } = this.props;
 
-        this.setState({
-            activePlaylist: playlist,
-        });
-
-        if (playlist === "Library") {
-            onChange(library.content);
+        if (playlist === "library") {
+            onChange(library, playlist, false);
         } else {
-            onChange(playlists[playlist].content);
+            onChange(playlists[playlist], playlist, true);
         }
 
     };
 
     render() {
-        const { activePlaylist, showNewPlaylistModal } = this.state;
-        const { playlists } = this.props;
+        const { showNewPlaylistModal, showAllPlaylists } = this.state;
+        const { playlists, songs, onCreatePlaylist, activePlaylist, playlistOrder } = this.props;
 
+        const showButton = playlists ? true : false;
+
+        const viewAllPlaylistButtonRender = (
+            <div
+                className="playlist-dropdown-main-button-navbar"
+                onClick={this.handleShowAllPlaylistsButtonToggle}
+                style={{display: showButton && !showAllPlaylists ? 'flex' : 'none'}}
+            >
+                <FontAwesomeIcon icon={faCaretDown}/>
+            </div>
+        );
+        
+        
         const playlistRenders = [];
-        for(const playlistName of Object.keys(playlists)) {
-            playlistRenders.push(
-                <MenuItem fontSize={16} active={playlistName === activePlaylist } onClick={() => this.handleActivateItem(playlistName)}>{playlistName}</MenuItem>
-            )
+
+        if (playlists) {
+            for(const playlistName of playlistOrder) {
+                playlistRenders.push(
+                    <MenuItem
+                        fontSize={16}
+                        active={playlistName === activePlaylist }
+                        onClick={() => this.handleActivateItem(playlistName)}>{playlistName}
+                    </MenuItem>
+                )
+            }
         }
+
         return (
             <div className="navbar-container">
-                <Modal
-                    width={700}
-                    height={500}
-                    title="New Playlist"
-                    cancelText="Cancel"
-                    text="Create"
-                    disablePrimary={true}
+                <CreatePlaylist
                     isShowing={showNewPlaylistModal}
-                    onClose={() => this.handleToggleModal(false)}
+                    onClose={this.handleClosePlaylistModal}
+                    onCreate={onCreatePlaylist}
+                    songs={songs}
+                    playlists={playlists}
                 >
 
-                </Modal>
+                </CreatePlaylist>
+
                 <MenuItem
                     fontSize={22}
-                    active={activePlaylist === "Library"}
-                    onClick={() => this.handleActivateItem("Library")}
+                    active={activePlaylist === "library"}
+                    onClick={() => this.handleActivateItem("library")}
                 >
                     Library
                 </MenuItem>
 
                 <div className="navbar-divider"/>
+                <div  className="playlist-container">
+                    {playlistRenders}
+                </div>
 
-                {playlistRenders}
+                {viewAllPlaylistButtonRender}
+
+                <ViewPlaylists 
+                    className="navbar-view-playlists"
+                    isShowing={showAllPlaylists}
+                    playlists={playlistOrder}
+                    activePlaylist={activePlaylist}
+                    onSelect={this.handlePlaylistDropdownSelect}
+                    onClose={this.handleOutsideClosePlaylist}
+                />
 
                 <Button
                     className="filled-button navbar-new-playlist"
                     height={10}
                     width={75}
                     fontSize={14}
-                    onClick={() => this.handleToggleModal(true)}
+                    onClick={this.handleOpenPlaylistModal}
                 >
                     New Playlist
                 </Button>
@@ -88,6 +146,10 @@ class NavBar extends React.Component {
 
 NavBar.propTypes = {
     playlists: PropTypes.object.isRequired,
+    playlistOrder: PropTypes.array.isRequired,
+    onCreatePlaylist: PropTypes.func.isRequired,
+    activePlaylist: PropTypes.string.isRequired,
+    songs: PropTypes.object.isRequired,
 };
 
 export default NavBar;

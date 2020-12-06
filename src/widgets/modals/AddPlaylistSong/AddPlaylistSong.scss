@@ -1,0 +1,54 @@
+@import "colors";
+
+.add-songs-selected-row {
+  background-color: $blue !important;
+  color: white !important;
+}
+
+.add-songs-list-container {
+  width: 100%;
+  height: calc(80vh - 80px - 60px - 40px - 10px - 47px);
+}
+
+.add-songs-list-container > #songs-table {
+  margin: 0;
+  width: 100%;
+
+}
+
+.add-songs-list-container > #songs-table th {
+  height: 15px;
+}
+
+.add-songs-list-container > #songs-table th:first-child {
+  border-top-left-radius: 3px;
+}
+
+.add-songs-list-container > #songs-table th:last-child {
+  border-top-right-radius: 3px;
+}
+
+.add-songs-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.add-songs-list-border-container {
+  display: flex;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid gray;
+}
+
+.add-songs-found-container {
+  font-size: 20px;
+  padding: 10px 0;
+  color: $blue;
+}
+
+.add-song-search {
+  margin-top: 30px;
+}

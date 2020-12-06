@@ -1,0 +1,133 @@
+@import "colors";
+
+#songs-table {
+  width: calc(100% - 240px);
+  margin: 0 120px;
+  border-spacing: 0;
+}
+
+#songs-table th {
+  height: 20px;
+  padding-bottom: 8px;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 9;
+}
+
+.songs-container {
+  height: calc(100vh - 50px - 150px - 94px);
+  overflow-y: auto;
+}
+
+#songs-table > tbody > tr {
+  height: 48px;
+}
+
+#songs-table tbody > tr:not(.song-active-row):hover {
+  background-color: $hover-blue;
+}
+
+#songs-table tbody > tr:hover {
+  cursor: pointer;
+}
+
+#songs-table td {
+  border-bottom: 1px solid $blue;
+}
+
+#songs-table tr:nth-child(2) > td {
+  margin-top: 50px;
+}
+
+#songs-table td:nth-child(1), #songs-table th:nth-child(1) {
+  padding-left: 10px;
+}
+
+.song-reg-header {
+  text-align: left;
+}
+
+.song-actions-col {
+  text-align: center;
+  width: 100px;
+}
+
+.song-active-row {
+  background-color: $blue !important;
+  color: white !important;
+}
+
+.play-icon, .edit-icon, .pause-icon, .delete-icon {
+  height: 100%;
+  display: flex;
+  width: 55px;
+  font-size: 50px;
+}
+
+.edit-icon {
+  margin-left: -10px;
+}
+
+.delete-icon {
+  margin-left: -10px;
+}
+
+.play-icon path, .pause-icon path, .edit-icon path {
+  fill: $blue;
+}
+
+.play-icon> svg:hover path, .pause-icon- > svg:hover path, .edit-icon > svg:hover path {
+  fill: $highlight-blue;
+}
+
+
+.play-icon-active path, .pause-icon-active path, .edit-icon-active path {
+  fill: white;
+}
+
+.play-icon-active > svg:hover path, .pause-icon-active > svg:hover path, .edit-icon-active > svg:hover path {
+  fill: $hover-white;
+}
+
+.delete-icon path {
+  fill: $red;
+}
+
+.delete-icon > svg:hover path {
+  fill: $hover-red;
+}
+
+.pause-icon svg, .play-icon svg, .edit-icon svg, .delete-icon svg {
+  width: 60px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.pause-icon svg {
+  transform: scale(0.4);
+  margin-left: 6px;
+}
+
+.play-icon svg {
+  transform: scale(0.4);
+}
+
+.edit-icon svg {
+  transform: scale(0.4);
+  margin-top: 2px;
+}
+
+.delete-icon svg {
+  transform: scale(0.55);
+  margin-top: 2px;
+}
+
+.actions-container {
+  justify-content: center;
+  display: flex;
+}
+
+.selected-row {
+  background: $hover-blue;
+}

@@ -1,0 +1,42 @@
+@import "colors";
+
+.search-input-container {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  border: 1px solid $blue;
+  border-radius: 40px;
+  width: fit-content;
+  padding: 0 20px;
+}
+
+.search-input {
+  border: none;
+  height: 30px;
+  padding: 0 10px;
+  font-size: 16px;
+  margin-bottom: -3px;
+}
+
+.search-input:focus {
+  outline: none;
+  border: none;
+}
+
+.search-input-cancel-container {
+  width: 11px;
+  height: 16px;
+}
+
+.search-input-cancel-icon {
+  cursor: pointer;
+}
+
+.search-input-cancel-icon:hover {
+  color: gray;
+}
+
+.search-input-search-icon {
+  font-size: 16px;
+  color: $blue;
+}
