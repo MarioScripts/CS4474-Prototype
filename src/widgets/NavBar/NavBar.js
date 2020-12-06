@@ -65,7 +65,7 @@ class NavBar extends React.Component {
 
     render() {
         const { showNewPlaylistModal, showAllPlaylists } = this.state;
-        const { playlists, songs, onCreatePlaylist, activePlaylist } = this.props;
+        const { playlists, songs, onCreatePlaylist, activePlaylist, playlistOrder } = this.props;
 
         const showButton = playlists ? true : false;
 
@@ -77,13 +77,13 @@ class NavBar extends React.Component {
             >
                 <FontAwesomeIcon icon={faCaretDown}/>
             </div>
-        )
+        );
         
         
         const playlistRenders = [];
 
         if (playlists) {
-            for(const playlistName of Object.keys(playlists)) {
+            for(const playlistName of playlistOrder) {
                 playlistRenders.push(
                     <MenuItem
                         fontSize={16}
@@ -124,7 +124,7 @@ class NavBar extends React.Component {
                 <ViewPlaylists 
                     className="navbar-view-playlists"
                     isShowing={showAllPlaylists}
-                    playlists={playlists}
+                    playlists={playlistOrder}
                     activePlaylist={activePlaylist}
                     onSelect={this.handlePlaylistDropdownSelect}
                     onClose={this.handleOutsideClosePlaylist}
@@ -146,6 +146,7 @@ class NavBar extends React.Component {
 
 NavBar.propTypes = {
     playlists: PropTypes.object.isRequired,
+    playlistOrder: PropTypes.array.isRequired,
     onCreatePlaylist: PropTypes.func.isRequired,
     activePlaylist: PropTypes.string.isRequired,
     songs: PropTypes.object.isRequired,

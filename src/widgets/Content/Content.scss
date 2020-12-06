@@ -55,6 +55,26 @@
   height: 50px;
 }
 
+.delete-playlist-icon {
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 7px;
+  margin-bottom: -1px;
+  width: 58px;
+}
+
+.delete-playlist-icon path {
+  fill: $red;
+}
+
+.delete-playlist-icon svg {
+  transform: scale(0.4);
+  width: 60px;
+  height: 50px;
+}
+
 .playall-button {
   height: 15px;
   margin-top: 10px;
@@ -82,14 +102,13 @@
 }
 .editplaylist-button {
   position: absolute;
-  right: 0px;
+  right: 76px;
   bottom: 2px;
 }
 
 .copyplaylist-button{
-  margin-right: 90px;
   position: absolute;
-  right: 0px;
+  right: 162px;
   bottom: 2px;
 }
 
@@ -109,4 +128,11 @@
 .song-search-content {
   max-height: 30vh;
   overflow: auto;
+}
+
+.deleteplaylist-button {
+  position: absolute;
+  right: 0;
+  top: 10px;
+  width: 3px;
 }

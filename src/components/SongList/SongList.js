@@ -3,6 +3,8 @@ import './SongList.scss';
 import PropTypes from 'prop-types';
 import {deleteSvg, editSvg, pauseSvg, playSvg} from "../../utils/iconUtils";
 import {PAUSED, PLAYING} from "../../utils/songUtils";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimes} from "@fortawesome/free-solid-svg-icons";
 
 class SongList extends React.Component {
     constructor(props) {
@@ -48,6 +50,7 @@ class SongList extends React.Component {
             showActive,
             showActions,
             className,
+            isPlaylist,
         } = this.props;
 
         const { selected } = this.state;
@@ -61,6 +64,10 @@ class SongList extends React.Component {
 
             let actionsRender;
             if (showActions) {
+                let deleteIconRender = deleteSvg(() => onSongDelete({path: songPath, index}));
+                if (isPlaylist) {
+                    deleteIconRender = <FontAwesomeIcon icon={faTimes} onClick={() => onSongDelete({path: songPath, index})}/>
+                }
                 actionsRender = (
                     <td className="song-actions-col">
                         <div className="actions-container">
@@ -71,7 +78,7 @@ class SongList extends React.Component {
                                 { editSvg(() => onSongEdit(index)) }
                             </div>
                             <div className={`delete-icon${isActive ? " delete-icon-active" : ""}`}>
-                                { deleteSvg(() => onSongDelete(index)) }
+                                { deleteIconRender }
                             </div>
                         </div>
 
@@ -119,6 +126,7 @@ class SongList extends React.Component {
 
 SongList.propTypes = {
     songs: PropTypes.object.isRequired,
+    isPlaylist: PropTypes.bool,
     activeSongIndex: PropTypes.number,
     isPlaying: PropTypes.bool,
     onSongStateChange: PropTypes.func,
@@ -134,6 +142,7 @@ SongList.propTypes = {
 SongList.defaultProps = {
     activeSongIndex: null,
     isPlaying: false,
+    isPlaylist: false,
     showActive: true,
     showActions: true,
     selectedRowCss: "selected-row"

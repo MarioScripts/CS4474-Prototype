@@ -6,6 +6,7 @@ import {formatTime, PAUSED, PLAYING, STOPPED} from "../../utils/songUtils";
 import {pauseSvg, playSvg, prevButton, skipButton, volumeMuteSvg, volumeSvg} from "../../utils/iconUtils";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faRandom } from "@fortawesome/free-solid-svg-icons";
+const settings = window.require("electron-settings");
 
 class MediaControls extends React.Component {
     constructor(props) {
@@ -23,11 +24,23 @@ class MediaControls extends React.Component {
         };
     }
 
-    resetSong = () => {
+    componentDidMount() {
+        this.setState({
+            songVolume: settings.getSync("volume"),
+            songMuted: settings.getSync("muted"),
+        });
+    }
+
+    resetSong = (hard) => {
+        const { songDuration } = this.state;
         this.setState({
             songProgress: 0,
+            songDuration: hard ? 0 : songDuration,
         });
-        this.player.seekTo(0);
+
+        if (this.player) {
+            this.player.seekTo(0);
+        }
     };
 
     handleSongProgress = (progress) => {
@@ -102,6 +115,9 @@ class MediaControls extends React.Component {
 
     handleVolumeChange = (e) => {
         const volumeValue = parseInt(e.target.value);
+        settings.setSync("volume", volumeValue);
+        settings.setSync("muted", false);
+
         this.setState({
             songVolume: volumeValue,
             songMuted: false,
@@ -110,6 +126,8 @@ class MediaControls extends React.Component {
 
     handleMuteToggle = () => {
         const { songMuted } = this.state;
+        settings.setSync("muted", !songMuted);
+
         this.setState({
             songMuted: !songMuted,
         });

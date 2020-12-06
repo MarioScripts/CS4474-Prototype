@@ -56,7 +56,7 @@ class ViewPlaylists extends React.Component{
         
         if (isShowing && playlists){
             const dropdownContents = []
-            Object.keys(playlists).forEach((val) => {
+            playlists.forEach((val) => {
                 const isActive = activePlaylist && activePlaylist == val;
 
                 dropdownContents.push(
@@ -102,7 +102,7 @@ class ViewPlaylists extends React.Component{
 }
 
 ViewPlaylists.propTypes = {
-    playlists: PropTypes.object.isRequired,
+    playlists: PropTypes.array.isRequired,
     activePlaylist: PropTypes.string.isRequired,
     onSelect: PropTypes.func,
     onClose: PropTypes.func,

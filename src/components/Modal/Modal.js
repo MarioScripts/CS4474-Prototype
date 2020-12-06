@@ -23,6 +23,7 @@ class Modal extends React.Component {
             isShowing,
             disablePrimary,
             isLoading,
+            isDelete,
         } = this.props;
 
         if (!isShowing) return null;
@@ -47,7 +48,7 @@ class Modal extends React.Component {
 
                         <div className="primary-load-container">
                             { loadingRender }
-                            <Button className="filled-button" onClick={() => this.handleClick(true)} disabled={disablePrimary || isLoading}>{text}</Button>
+                            <Button className={isDelete ? "delete-button" : "filled-button"} onClick={() => this.handleClick(true)} disabled={disablePrimary || isLoading}>{text}</Button>
                         </div>
                     </div>
                 </div>
@@ -67,6 +68,7 @@ Modal.propTypes = {
     disablePrimary: PropTypes.bool,
     onClose: PropTypes.func,
     isLoading: PropTypes.bool,
+    isDelete: PropTypes.bool,
 };
 
 Modal.defaultProps = {
@@ -75,6 +77,7 @@ Modal.defaultProps = {
     disablePrimary: false,
     isShowing: false,
     isLoading: false,
+    isDelete: false,
 };
 
 export default Modal;

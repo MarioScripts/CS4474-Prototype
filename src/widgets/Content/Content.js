@@ -2,7 +2,7 @@ import React from 'react';
 import './Content.scss';
 import PropTypes from 'prop-types';
 import Button from "../../components/Button/Button";
-import {playSvg} from "../../utils/iconUtils";
+import {deleteSvg, playSvg} from "../../utils/iconUtils";
 import SongList from "../../components/SongList/SongList";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faMusic, faClone, faEdit } from "@fortawesome/free-solid-svg-icons";
@@ -36,16 +36,6 @@ class Content extends React.Component {
         }, 300);
     };
 
-    handleEditButtonClick = () =>{
-        const {onPlaylistEdit} = this.props;
-        onPlaylistEdit();
-    };
-
-    handleCopyButtonClick = () =>{
-        const {onPlaylistCopy} = this.props;
-        onPlaylistCopy();
-    };
-
     render() {
         const {
             songs,
@@ -57,6 +47,9 @@ class Content extends React.Component {
             onSongStateChange,
             onSongEdit,
             onSongDelete,
+            onPlaylistCopy,
+            onPlaylistDelete,
+            onPlaylistEdit,
         } = this.props;
         const songLength = Object.keys(songs).length;
 
@@ -98,17 +91,23 @@ class Content extends React.Component {
 
                         {addButtonRender}
                         
-                        <Button className="inverse-button copyplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} width={13} onClick={this.handleCopyButtonClick}>
+                        <Button className="inverse-button copyplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} width={13} onClick={onPlaylistCopy}>
                             <FontAwesomeIcon icon={faClone}/>
                             <div className="copy-playlist-text">
                                 Copy
                             </div>
                         </Button>
 
-                        <Button className="inverse-button editplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} width={13} onClick={this.handleEditButtonClick}>
+                        <Button className="inverse-button editplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} width={13} onClick={onPlaylistEdit}>
                             <FontAwesomeIcon icon={faEdit}/>
                             <div className="edit-playlist-text">
                                 Edit
+                            </div>
+                        </Button>
+
+                        <Button className="inverse-delete-button deleteplaylist-button" style={{display : isPlaylist ? 'flex' : 'none'}} onClick={onPlaylistDelete}>
+                            <div className="delete-playlist-icon">
+                                { deleteSvg() }
                             </div>
                         </Button>
                     </div>
@@ -125,6 +124,7 @@ class Content extends React.Component {
 
                 <SongList
                     songs={songs}
+                    isPlaylist={isPlaylist}
                     activeSongIndex={activeSongIndex}
                     isPlaying={isPlaying}
                     onSongDelete={onSongDelete}
@@ -149,6 +149,7 @@ Content.propTypes = {
     onAddSong: PropTypes.func,
     onPlaylistEdit : PropTypes.func,
     onPlaylistCopy : PropTypes.func,
+    onPlaylistDelete : PropTypes.func,
 };
 
 Content.defaultProps = {
@@ -162,6 +163,7 @@ Content.defaultProps = {
     onAddSong: () => {},
     onPlaylistEdit: ()=> {},
     onPlaylistCopy: ()=> {},
+    onPlaylistDelete: ()=> {},
 };
 
 export default Content;
