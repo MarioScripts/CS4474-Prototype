@@ -3,6 +3,8 @@
 
 This project uses React + Electron. It requires that you have node installed on your computer. You can get the latest [LTS version of node here.](https://nodejs.org/en/download/)
 
+You can get the latest .EXE release [here.](https://github.com/MarioScripts/CS4474-Prototype/releases)
+
 Once you have node installed, clone the repo and run `npm install` to install all dependencies. After dependencies have been installed, you can run any of the available scripts:
 
 ## Available Scripts
