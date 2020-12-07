@@ -286,7 +286,7 @@ class App extends React.Component {
 
             // Add file
             if (selectedIndex === 0) {
-                filesSelected = await dialog.showOpenDialog({properties: ['openFile', 'multiSelections']});
+                filesSelected = await dialog.showOpenDialog({properties: ['openFile', 'multiSelections'], filters: [{name: "Music", extensions: ['mp3']}]});
             } else {
                 filesSelected = await dialog.showOpenDialog({properties: ['openDirectory', 'multiSelections']});
             }
