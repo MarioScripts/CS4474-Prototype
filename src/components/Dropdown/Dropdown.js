@@ -65,6 +65,7 @@ class Dropdown extends React.Component {
             this.setState({
                 selectedValue: isUnselect ? "" : options[index],
                 selectedIndex: isUnselect ? null : index,
+                showOptions: false,
             });
         } else {
             this.setState({

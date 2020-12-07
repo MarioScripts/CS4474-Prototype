@@ -21,6 +21,7 @@
 
 .quick-add-dropdown-container {
   display: flex;
+  z-index: 999;
 }
 
 .quick-add-container > div:not(:first-child) {

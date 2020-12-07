@@ -567,7 +567,7 @@ class App extends React.Component {
                 </Modal>
 
                 <Modal
-                    height={180}
+                    height={200}
                     width={600}
                     title="Delete Playlist"
                     isShowing={showDeletePlaylist}
