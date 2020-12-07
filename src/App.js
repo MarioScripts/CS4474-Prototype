@@ -464,7 +464,6 @@ class App extends React.Component {
         }
     };
 
-
     render() {
         const {
             viewableSongList,
@@ -488,6 +487,13 @@ class App extends React.Component {
             playlistOrder,
             showDeletePlaylist,
         } = this.state;
+
+        let removeSongPrompt;
+        if (viewableKey === "library") {
+            removeSongPrompt = (<div className="prompt">Are you sure you want to remove <strong>{deletedSongInfo && viewableSongList[deletedSongInfo.path] ? viewableSongList[deletedSongInfo.path].name : ""}</strong> from your library? This will remove this song from all your playlists.</div>);
+        } else {
+            removeSongPrompt = (<div className="prompt">Are you sure you want to remove <strong>{deletedSongInfo && viewableSongList[deletedSongInfo.path] ? viewableSongList[deletedSongInfo.path].name : ""}</strong> from <strong>{viewableKey}</strong>?</div>);
+        }
 
         return (
             <div className="container">
@@ -549,7 +555,7 @@ class App extends React.Component {
                 </Modal>
 
                 <Modal
-                    height={180}
+                    height={viewableKey === "library" ? 200 : 180}
                     width={600}
                     title="Remove Song"
                     isShowing={showDeleteSong}
@@ -557,7 +563,7 @@ class App extends React.Component {
                     isDelete
                     onClose={this.handleSongDeleteConfirm}
                 >
-                    <div className="prompt">Are you sure you want to remove <strong>{deletedSongInfo && viewableSongList[deletedSongInfo.path] ? viewableSongList[deletedSongInfo.path].name : ""}</strong> from <strong>{viewableKey}</strong>?</div>
+                    { removeSongPrompt }
                 </Modal>
 
                 <Modal

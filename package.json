@@ -97,7 +97,7 @@
     "electron-builder": "^22.9.1",
     "file-loader": "^6.1.1",
     "hot-module-replacement": "^3.0.4",
-    "html-webpack-plugin": "^4.5.0",
+    "html-webpack-plugin": "^5.0.0-alpha.15",
     "mini-css-extract-plugin": "^1.2.1",
     "node-sass": "^4.14.1",
     "react-hot-loader": "^4.13.0",
