@@ -26,8 +26,8 @@ class MediaControls extends React.Component {
 
     componentDidMount() {
         this.setState({
-            songVolume: settings.getSync("volume"),
-            songMuted: settings.getSync("muted"),
+            songVolume: settings.getSync("volume") || 50,
+            songMuted: settings.getSync("muted") || false,
         });
     }
 
