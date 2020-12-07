@@ -1,7 +1,7 @@
 
 # CS4474 Assignment Prototype
 
-This project uses React + Electron. It requires that you have node installed on your computer. You can get the latest [LTS version of node here.](https://nodejs.org/en/download/)
+This project uses React + Electron. It requires that you have node installed on your computer for development. You can get the latest [LTS version of node here.](https://nodejs.org/en/download/)
 
 You can get the latest .EXE release [here.](https://github.com/MarioScripts/CS4474-Prototype/releases)
 
@@ -15,7 +15,6 @@ In the project directory, you can run:
 
 Runs the app in development mode.\
 An electron window should popup with the app running.
-You can also open go to [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ### `npm run clean`
 
