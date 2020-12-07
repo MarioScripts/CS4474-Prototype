@@ -373,6 +373,7 @@ class App extends React.Component {
         settings.setSync("playlists", playlists);
 
         this.setState({
+            playlists: playlists,
             viewableSongList: await this.createSongList(false, newSongList),
             showAddPlaylistSong: false,
         });
